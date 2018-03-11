@@ -26,13 +26,14 @@ class RequestList extends Component {
     return Object.keys(requests)
       .reverse()
       .map(key => {
+        const id = requests[key]._id;
         return (
           <tr key={key}>
           <td className={"center-align white"} colSpan={1} style={{borderTopLeftRadius:'50%', borderBottomLeftRadius:'50%' }}>
               <a className="waves-effect waves-teal btn-flat">
                 <i
                   className="material-icons"
-                  onClick={() => this.handleUpvote(requests[key]._id)}
+                  onClick={() => this.handleUpvote(id)}
                 >
                   arrow_upward
                 </i>
@@ -41,7 +42,7 @@ class RequestList extends Component {
               <a className="waves-effect waves-teal btn-flat">
                 <i
                   className="material-icons"
-                  onClick={() => this.handleDownvote(requests[key]._id)}
+                  onClick={() => this.handleDownvote(id)}
                 >
                   arrow_downward
                 </i>
@@ -59,7 +60,7 @@ class RequestList extends Component {
               style={{ padding: "0" }}
             >
               <LinkToTrack
-                id={requests[key]._id}
+                id={id}
                 text={requests[key].sourceTrack}
               />
             </td>
@@ -68,7 +69,7 @@ class RequestList extends Component {
               style={{ padding: "0" }}
             >
               <LinkToTrack
-                id={requests[key]._id}
+                id={id}
                 text={requests[key].sourceArtist}
               />
             </td>
@@ -77,7 +78,7 @@ class RequestList extends Component {
               style={{ padding: "0" }}
             >
               <LinkToTrack
-                id={requests[key]._id}
+                id={id}
                 text={`${requests[key].recipe}ed by`}
               />
             </td>
@@ -86,7 +87,7 @@ class RequestList extends Component {
               style={{ padding: "0" }}
             >
               <LinkToTrack
-                id={requests[key]._id}
+                id={id}
                 text={requests[key].targetArtist}
               />
             </td>
@@ -95,12 +96,12 @@ class RequestList extends Component {
               style={{ padding: "0" }}
             >
               <LinkToTrack
-                id={requests[key]._id}
+                id={id}
                 text={requests[key].flavour}
               />
             </td>
             <td className={`${{}} center-align`} style={{ padding: "0", borderTopRightRadius:'50%',borderBottomRightRadius:'50%'}}>
-              <LinkToTrack id={requests[key]._id} text={requests[key].status} />
+              <LinkToTrack id={id} text={requests[key].status} />
             </td>
           </tr>
         );
