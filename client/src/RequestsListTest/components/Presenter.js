@@ -1,10 +1,6 @@
 import React, { Component } from "react";
-import { connect } from "react-redux";
-import { Link } from "react-router-dom";
-import LinkToTrack from "../LinkToTrack";
-import * as actions from "../../actions";
 
-class RequestList extends Component {
+class Presenter extends Component {
   componentDidMount() {
     this.props.fetchRequests();
   }
@@ -20,15 +16,14 @@ class RequestList extends Component {
       this.props.fetchRequests();
     });
   }
-
   renderRequests() {
     const { requests } = this.props;
     return Object.keys(requests)
       .reverse()
       .map(key => {
         return (
-          <tr key={key}>
-          <td className={"center-align white"} colSpan={1} style={{borderTopLeftRadius:'50%', borderBottomLeftRadius:'50%' }}>
+          <tr key={key} style={{ border: "1px black solid" }}>
+            <td className={"center-align"} colSpan={1}>
               <a className="waves-effect waves-teal btn-flat">
                 <i
                   className="material-icons"
@@ -47,61 +42,29 @@ class RequestList extends Component {
                 </i>
               </a>
             </td>
-            <td colSpan={1} className={'white'}>
-              <span className={"center-align"} style={{color:'green'}}>{requests[key].upvotes}</span>
+            <td colSpan={1}>
+              <span className={"center-align"}>{requests[key].upvotes}</span>
               <br />
-              <span className={"center-align"} style={{color:'red'}}>
+              <span className={"center-align"}>
                 {requests[key].downvotes * -1}
               </span>
             </td>
-            <td
-              className={"black center-align"}
-              style={{ padding: "0" }}
-            >
-              <LinkToTrack
-                id={requests[key]._id}
-                text={requests[key].sourceTrack}
-              />
+            <td className={"light-green lighten-2 center-align"}>
+              {requests[key].sourceTrack}
             </td>
-            <td
-              className={"black center-align"}
-              style={{ padding: "0" }}
-            >
-              <LinkToTrack
-                id={requests[key]._id}
-                text={requests[key].sourceArtist}
-              />
+            <td className={"indigo lighten-5 center-align"}>
+              {requests[key].sourceArtist}
             </td>
-            <td
-              className={"black center-align"}
-              style={{ padding: "0" }}
-            >
-              <LinkToTrack
-                id={requests[key]._id}
-                text={`${requests[key].recipe}ed by`}
-              />
+            <td className={"blue lighten-1 center-align"}>{`${
+              requests[key].recipe
+            }ed by`}</td>
+            <td className={"red lighten-3 center-align"}>
+              {requests[key].targetArtist}
             </td>
-            <td
-              className={"black center-align"}
-              style={{ padding: "0" }}
-            >
-              <LinkToTrack
-                id={requests[key]._id}
-                text={requests[key].targetArtist}
-              />
+            <td className={"deep-purple lighten-4 center-align"}>
+              {requests[key].flavour}
             </td>
-            <td
-              className={"black center-align"}
-              style={{ padding: "0" }}
-            >
-              <LinkToTrack
-                id={requests[key]._id}
-                text={requests[key].flavour}
-              />
-            </td>
-            <td className={`${{}} center-align`} style={{ padding: "0", borderTopRightRadius:'50%',borderBottomRightRadius:'50%'}}>
-              <LinkToTrack id={requests[key]._id} text={requests[key].status} />
-            </td>
+            <td className={`${{}} center-align`}>{requests[key].status}</td>
           </tr>
         );
       });
@@ -139,9 +102,4 @@ class RequestList extends Component {
     }
   }
 }
-
-function mapStateToProps(state) {
-  return { requests: state.requests, auth: state.auth, message: state.message };
-}
-
-export default connect(mapStateToProps, actions)(RequestList);
+export default Presenter;

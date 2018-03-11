@@ -8,6 +8,10 @@ const RequestSchema = new Schema({
   // comments: [CommentSchema],
   upvotes: { type: Number, default: 0, min: 0 },
   downvotes: { type: Number, default: 0, min: 0 },
+  votes: { 
+    upvotes:{ type: Object, default: {} },
+    downvotes:{ type: Object, default: {} },
+  },
   sourceArtist: String,
   sourceTrack: String,
   targetArtist: String,
