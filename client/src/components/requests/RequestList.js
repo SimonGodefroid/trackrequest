@@ -10,13 +10,11 @@ class RequestList extends Component {
   }
   handleUpvote(id) {
     this.props.upvoteRequest(this.props.auth._id, id).then(() => {
-      console.log(id);
       this.props.fetchRequests();
     });
   }
   handleDownvote(id) {
     this.props.downvoteRequest(this.props.auth._id, id).then(() => {
-      console.log(id);
       this.props.fetchRequests();
     });
   }
