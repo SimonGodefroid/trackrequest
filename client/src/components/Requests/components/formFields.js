@@ -1,7 +1,7 @@
 export default [
   // { label: "Request Title", name: "title" },
   // { label: "Message", name: "body" },
-  { label: "Source Artist", name: "sourceArtist" },
+  // { label: "Source Artist", name: "sourceArtist" },
   { label: "Source Track", name: "sourceTrack" },
   { label: "Target Artist", name: "targetArtist" },
   // { label: "Category", name: "category" }, // Optional Remix, SelfCover, Tribute, Mashups...

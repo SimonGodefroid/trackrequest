@@ -27,8 +27,8 @@ class RequestList extends Component {
         const id = requests[key]._id;
         return (
           <tr key={key}>
-          <td className={"center-align white"} colSpan={1} style={{borderTopLeftRadius:'50%', borderBottomLeftRadius:'50%' }}>
-              <a className="waves-effect waves-teal btn-flat">
+          <td className={"center-align black"} colSpan={1} style={{borderTopLeftRadius:'50%', borderBottomLeftRadius:'50%'}}>
+              <a className="waves-effect waves-teal btn-flat" style={{color:'white'}}>
                 <i
                   className="material-icons"
                   onClick={() => this.handleUpvote(id)}
@@ -37,7 +37,7 @@ class RequestList extends Component {
                 </i>
               </a>
               <br />
-              <a className="waves-effect waves-teal btn-flat">
+              <a className="waves-effect waves-teal btn-flat" style={{color:'white'}}>
                 <i
                   className="material-icons"
                   onClick={() => this.handleDownvote(id)}
@@ -46,7 +46,7 @@ class RequestList extends Component {
                 </i>
               </a>
             </td>
-            <td colSpan={1} className={'white'}>
+            <td colSpan={1} className={'black'}>
               <span className={"center-align"} style={{color:'green'}}>{requests[key].upvotes}</span>
               <br />
               <span className={"center-align"} style={{color:'red'}}>
@@ -140,7 +140,7 @@ class RequestList extends Component {
 }
 
 function mapStateToProps(state) {
-  return { requests: state.requests, auth: state.auth, message: state.message };
+  return { requests: state.requests.requests, auth: state.auth, message: state.message };
 }
 
 export default connect(mapStateToProps, actions)(RequestList);

@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import RequestList from "./requests/RequestList";
+import RequestList from "./Request/RequestList";
 const Dashboard = () => {
   return (
     <div>

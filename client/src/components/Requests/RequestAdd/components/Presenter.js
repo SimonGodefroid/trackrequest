@@ -1,8 +1,8 @@
 // RequestNew shows RequestForm and RequestReview
 import React, { Component } from "react";
 import { reduxForm } from "redux-form";
-import RequestForm from "./RequestForm";
-import RequestFormReview from "./RequestFormReview";
+import RequestForm from "../../components/RequestForm";
+import RequestFormReview from "../../components/RequestFormReview";
 class RequestNew extends Component {
   state = { showFormReview: false };
   renderContent() {
@@ -24,6 +24,4 @@ class RequestNew extends Component {
   }
 }
 
-export default reduxForm({
-  form: "requestForm"
-})(RequestNew);
+export default RequestNew;
