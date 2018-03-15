@@ -5,7 +5,7 @@ import {
   fetchRequests,
   upvoteRequest,
   downvoteRequest
-} from "./modules/actions";
+} from "../modules/actions";
 import Presenter from "./components/Presenter";
 const mapStateToProps = state => {
   return {
