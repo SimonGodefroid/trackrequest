@@ -33,6 +33,7 @@ require("./routes/authRoutes")(app);
 // require("./routes/billingRoutes")(app);
 require("./routes/requestRoutes")(app);
 require("./routes/commentRoutes")(app);
+require("./routes/userRoutes")(app);
 
 if (process.env.NODE_ENV === "production") {
   // Express will serve up production assets

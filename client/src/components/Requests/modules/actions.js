@@ -85,12 +85,12 @@ export const clearCurrentRequest = () => dispatch => {
 };
 
 export const upvoteRequest = (userId, requestId) => async dispatch => {
-  const res = await axios.post(`/api/${userId}/requests/${requestId}/upvote`);
+  const res = await axios.post(`/api/requests/${requestId}/user/${userId}/upvote`);
   dispatch({ type: UPVOTE_REQUEST, payload: res.data });
 };
 
 export const downvoteRequest = (userId, requestId) => async dispatch => {
-  const res = await axios.post(`/api/${userId}/requests/${requestId}/downvote`);
+  const res = await axios.post(`/api/requests/${requestId}/user/${userId}/downvote`);
   dispatch({ type: DOWNVOTE_REQUEST, payload: res.data });
 };
 

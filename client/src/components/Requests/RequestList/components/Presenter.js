@@ -63,31 +63,31 @@ class RequestList extends Component {
               </div>
             </td>
             <td colSpan={1} className={'black'}>
-              <span className={'center-align'} style={{ color: 'green' }}>
+              <span  style={{ color: 'green' }}>
                 {requests[key].upvotes}
               </span>
               <br />
-              <span className={'center-align'} style={{ color: 'red' }}>
+              <span  style={{ color: 'red' }}>
                 {requests[key].downvotes * -1}
               </span>
             </td>
-            <td className={'black center-align'} style={{ padding: '0' }}>
+            <td className={'black'} style={{ padding: '0' }}>
               <LinkToTrack id={id} text={requests[key].sourceTrack} />
             </td>
-            <td className={'black center-align'} style={{ padding: '0' }}>
+            <td className={'black'} style={{ padding: '0' }}>
               <LinkToTrack id={id} text={requests[key].sourceArtist} />
             </td>
-            <td className={'black center-align'} style={{ padding: '0' }}>
+            <td className={'black'} style={{ padding: '0' }}>
               <LinkToTrack id={id} text={`${requests[key].recipe}ed by`} />
             </td>
-            <td className={'black center-align'} style={{ padding: '0' }}>
+            <td className={'black'} style={{ padding: '0' }}>
               <LinkToTrack id={id} text={requests[key].targetArtist} />
             </td>
-            <td className={'black center-align'} style={{ padding: '0' }}>
+            <td className={'black'} style={{ padding: '0' }}>
               <LinkToTrack id={id} text={requests[key].flavour} />
             </td>
             <td
-              className={`${{}} center-align`}
+              className={`${{}}`}
               style={{
                 padding: '0',
                 borderTopRightRadius: '50%',
@@ -104,18 +104,18 @@ class RequestList extends Component {
     if (this.props.requests && Object.keys(this.props.requests).length > 0) {
       return (
         <div>
-          <table>
+          <table className={'centered'}>
             <thead>
               <tr>
                 <th className={'center-align'} colSpan={2}>
                   Votes
                 </th>
-                <th className={'center-align'}>Source Song</th>
-                <th className={'center-align'}>Source Artist</th>
-                <th className={'center-align'}>Recipe</th>
-                <th className={'center-align'}>Target Artist</th>
-                <th className={'center-align'}>Flavour</th>
-                <th className={'center-align'}>Status</th>
+                <th>Source Song</th>
+                <th>Source Artist</th>
+                <th>Recipe</th>
+                <th>Target Artist</th>
+                <th>Flavour</th>
+                <th>Status</th>
               </tr>
             </thead>
             <tbody>{this.renderRequests()}</tbody>
