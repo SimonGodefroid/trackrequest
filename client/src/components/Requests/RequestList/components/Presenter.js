@@ -29,7 +29,7 @@ class RequestList extends Component {
         return (
           <tr key={key}>
             <td
-              className={'center-align black'}
+              className={'center-align blue'}
               colSpan={1}
               style={{
                 borderTopLeftRadius: '50%',
@@ -62,7 +62,7 @@ class RequestList extends Component {
                 </a>
               </div>
             </td>
-            <td colSpan={1} className={'black'}>
+            <td colSpan={1} className={'blue'}>
               <span  style={{ color: 'green' }}>
                 {requests[key].upvotes}
               </span>
@@ -71,19 +71,19 @@ class RequestList extends Component {
                 {requests[key].downvotes * -1}
               </span>
             </td>
-            <td className={'black'} style={{ padding: '0' }}>
+            <td className={'blue'} style={{ padding: '0' }}>
               <LinkToTrack id={id} text={requests[key].sourceTrack} />
             </td>
-            <td className={'black'} style={{ padding: '0' }}>
+            <td className={'blue'} style={{ padding: '0' }}>
               <LinkToTrack id={id} text={requests[key].sourceArtist} />
             </td>
-            <td className={'black'} style={{ padding: '0' }}>
+            <td className={'blue'} style={{ padding: '0' }}>
               <LinkToTrack id={id} text={`${requests[key].recipe}ed by`} />
             </td>
-            <td className={'black'} style={{ padding: '0' }}>
+            <td className={'blue'} style={{ padding: '0' }}>
               <LinkToTrack id={id} text={requests[key].targetArtist} />
             </td>
-            <td className={'black'} style={{ padding: '0' }}>
+            <td className={'blue'} style={{ padding: '0' }}>
               <LinkToTrack id={id} text={requests[key].flavour} />
             </td>
             <td

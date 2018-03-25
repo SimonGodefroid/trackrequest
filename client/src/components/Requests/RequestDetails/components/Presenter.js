@@ -132,8 +132,8 @@ class RequestDetails extends Component {
               </div>
               <div className="card-content">
                 <span className="card-title center">
-                  submitted by {this.props.auth.username}, on
-                  {this.props.currentRequest.createdAt}.
+                  submitted by {this.props.auth.username}, on {" "}
+                  {this.props.currentRequest && this.props.currentRequest.createdAt && new Date(this.props.currentRequest.createdAt).toLocaleDateString('fr-FR')}.
                 </span>
               </div>
             </div>
