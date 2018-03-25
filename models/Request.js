@@ -8,7 +8,8 @@ const RequestSchema = new Schema({
   // comments: [CommentSchema],
   upvotes: { type: Number, default: 0, min: 0 },
   downvotes: { type: Number, default: 0, min: 0 },
-  votes: { 
+  comments:[{ type: Schema.Types.ObjectId, ref: "Comment" }],
+  votes: {
     upvotes:{ type: Object, default: {} },
     downvotes:{ type: Object, default: {} },
   },
@@ -20,6 +21,8 @@ const RequestSchema = new Schema({
   recipe: String,
   flavour: String,
   _user: { type: Schema.Types.ObjectId, ref: "User" }, // reference field
-  created: Date
+  createdAt: Date,
+},{
+  timestamps: true
 });
 module.exports = mongoose.model("Request", RequestSchema, "requests");

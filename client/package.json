@@ -16,6 +16,7 @@
   },
   "dependencies": {
     "axios": "^0.17.1",
+    "halogenium": "^2.2.3",
     "materialize-css": "^0.100.2",
     "react": "^16.1.1",
     "react-dom": "^16.1.1",

@@ -123,7 +123,7 @@
               message: err,
             });
           } else {
-            console.log('object',object);
+            console.log('object', object);
             let result = object;
             if (object.length > 0) {
               result = object[0];
@@ -159,12 +159,12 @@
           { new: true },
         )
           .exec()
-          .then(request => {
-            return res.status(200).json({
+          .then(request =>
+            res.status(200).json({
               success: true,
               message: request,
-            });
-          })
+            }),
+          )
           .catch(err => {
             console.log('err', err);
             return res.status(500).json({

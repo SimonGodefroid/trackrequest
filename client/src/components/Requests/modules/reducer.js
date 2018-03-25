@@ -6,17 +6,23 @@ import {
   DOWNVOTE_REQUEST,
   CLEAR_MESSAGE,
   FETCH_SOURCE_ARTIST_IMAGE,
-  FETCH_TARGET_ARTIST_IMAGE
+  FETCH_TARGET_ARTIST_IMAGE,
+  POST_COMMENT,
+  DELETE_COMMENT,
+  GET_COMMENTS,
 } from "../modules/types";
+
+// AIzaSyCGpdGpRgMnVn8vIycCAcWQo6D8OHp6_rg
 
 const initialState = {
   requests: [],
   currentRequest: {},
   imageSourceArtist: [],
-  imageTargetArtist: []
+  imageTargetArtist: [],
+  comments:[],
 };
 
-export const reducer = (state = initialState, action) => {
+export const reducer = (state = {...initialState}, action) => {
   switch (action.type) {
     case FETCH_REQUESTS:
       return {
@@ -56,6 +62,20 @@ export const reducer = (state = initialState, action) => {
     case CLEAR_MESSAGE:
       return {
         ...state
+      };
+    case POST_COMMENT:
+      return {
+        ...state
+      };
+    case DELETE_COMMENT:
+      return {
+        ...state
+      };
+    case GET_COMMENTS:
+    console.log('mercer')
+      return {
+        ...state,
+        comments: action.payload,
       };
     default:
       return initialState;

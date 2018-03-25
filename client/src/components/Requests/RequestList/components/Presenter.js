@@ -110,12 +110,12 @@ class RequestList extends Component {
                 <th className={'center-align'} colSpan={2}>
                   Votes
                 </th>
-                <th>Source Song</th>
-                <th>Source Artist</th>
-                <th>Recipe</th>
-                <th>Target Artist</th>
-                <th>Flavour</th>
-                <th>Status</th>
+                <th className={'center-align'}>Source Song</th>
+                <th className={'center-align'}>Source Artist</th>
+                <th className={'center-align'}>Recipe</th>
+                <th className={'center-align'}>Target Artist</th>
+                <th className={'center-align'}>Flavour</th>
+                <th className={'center-align'}>Status</th>
               </tr>
             </thead>
             <tbody>{this.renderRequests()}</tbody>

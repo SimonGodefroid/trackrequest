@@ -13,7 +13,7 @@ module.exports = app => {
   // requireLogin,
   Ctrl.create);// create comment for request 123
   app.patch("/api/comments/:id([a-fA-F\\d]{24})", Ctrl.update); // update comment
-  app.delete("/api/comments/:id([a-fA-F\\d]{24})", Ctrl.delete); // delete comment
+  app.delete("/api/comments/:id([a-fA-F\\d]{24})/request/:requestid([a-fA-F\\d]{24})", Ctrl.delete); // delete comment
   app.post(
     "/api/comments/:id([a-fA-F\\d]{24})/user/:userid([a-fA-F\\d]{24})/upvote",
     Ctrl.upvote

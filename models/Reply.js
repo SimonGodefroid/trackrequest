@@ -12,5 +12,8 @@ const ReplySchema = new Schema({
     upvotes:{ type: Object, default: {} },
     downvotes:{ type: Object, default: {} },
   },
+  createdAt: Date,
+},{
+  timestamps: true
 });
 module.exports = mongoose.model("Reply", ReplySchema, "replies");

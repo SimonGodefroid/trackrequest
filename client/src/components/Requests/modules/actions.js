@@ -8,6 +8,9 @@ import {
   FETCH_TARGET_ARTIST_IMAGE,
   UPVOTE_REQUEST,
   DOWNVOTE_REQUEST,
+  POST_COMMENT,
+  DELETE_COMMENT,
+  GET_COMMENTS,
   CLEAR_MESSAGE,
   CLEAR_CURRENT_REQUEST,
 } from './types';
@@ -96,4 +99,22 @@ export const downvoteRequest = (userId, requestId) => async dispatch => {
 
 export const clearMessages = () => dispatch => {
   dispatch({ type: CLEAR_MESSAGE, payload: '' });
+};
+
+export const postComment = (userId, requestId, content) => async dispatch => {
+  const res = await axios.post(`/api/comments/${requestId}/user/${userId}`,{
+    content: content
+  });
+  dispatch({ type: POST_COMMENT, payload: res.data });
+};
+
+export const deleteComment = (commentId,requestId) => async dispatch => {
+  const res = await axios.delete(`/api/comments/${commentId}/request/${requestId}`
+  );
+  dispatch({ type: DELETE_COMMENT, payload: res.data })
+};
+
+export const getComments = (requestId) => async dispatch => {
+  const res = await axios.get(`/api/comments/request/${requestId}`);
+  dispatch({ type: GET_COMMENTS, payload: res.data.message });
 };
