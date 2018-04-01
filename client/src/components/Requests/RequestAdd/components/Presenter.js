@@ -1,6 +1,5 @@
 // RequestNew shows RequestForm and RequestReview
 import React, { Component } from "react";
-import { reduxForm } from "redux-form";
 import RequestForm from "../../components/RequestForm";
 import RequestFormReview from "../../components/RequestFormReview";
 class RequestNew extends Component {
@@ -9,12 +8,14 @@ class RequestNew extends Component {
     if (this.state.showFormReview) {
       return (
         <RequestFormReview
+          userid={this.props.auth._id}
           onCancel={() => this.setState({ showFormReview: false })}
         />
       );
     }
     return (
       <RequestForm
+
         onRequestSubmit={() => this.setState({ showFormReview: true })}
       />
     );

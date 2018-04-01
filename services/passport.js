@@ -5,14 +5,14 @@ const keys = require('../config/keys');
 const User = mongoose.model('users');
 
 passport.serializeUser((user, done) => {
-	// null = no error
-	done(null, user.id);
+  // null = no error
+  done(null, user.id);
 });
 
 passport.deserializeUser((id, done) => {
-	User.findById(id).then(user => {
-		done(null, user);
-	});
+  User.findById(id).then(user => {
+    done(null, user);
+  });
 });
 
 // promise based code
@@ -41,20 +41,20 @@ passport.deserializeUser((id, done) => {
 
 // async await refactor
 passport.use(
-	new GoogleStrategy(
-		{
-			clientID: keys.googleClientID,
-			clientSecret: keys.googleClientSecret,
-			callbackURL: '/auth/google/callback',
-			proxy: true
-		},
-		async (accessToken, refreshToken, profile, done) => {
-			const existingUser = await User.findOne({ googleId: profile.id });
-			if (existingUser) {
-				return done(null, existingUser);
-			}
-			const user = await new User({ googleId: profile.id }).save();
-			done(null, user);
-		}
-	)
+  new GoogleStrategy(
+    {
+      clientID: keys.googleClientID,
+      clientSecret: keys.googleClientSecret,
+      callbackURL: '/auth/google/callback',
+      proxy: true,
+    },
+    async (accessToken, refreshToken, profile, done) => {
+      const existingUser = await User.findOne({ googleId: profile.id });
+      if (existingUser) {
+        return done(null, existingUser);
+      }
+      const user = await new User({ googleId: profile.id, username: profile.displayName, avatar: profile.photos[0].value}).save();
+      done(null, user);
+    },
+  ),
 );

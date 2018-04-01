@@ -1,5 +1,4 @@
 // SurveyFormReview show user their form inputs for review
-import _ from 'lodash';
 import React from 'react';
 import { connect } from 'react-redux';
 import formFields from './formFields';
@@ -8,6 +7,7 @@ import * as actions from '../modules/actions';
 import { sanitizeFormValues } from '../modules/helpers';
 const RequestFormReview = ({
   onCancel,
+  auth,
   formValues,
   submitTrackRequest,
   history,
@@ -31,7 +31,6 @@ const RequestFormReview = ({
   const reviewFields = [...reviewSelectField, ...reviewRegularFields];
   // make helper method to pass as values the stuff for react-select fields
   const formValuesToSubmit = sanitizeFormValues(formValues);
-  //
   return (
     <div>
       <h5>Please confirm your entries !</h5>
@@ -43,7 +42,9 @@ const RequestFormReview = ({
         Back
       </button>
       <button
-        onClick={() => submitTrackRequest(formValuesToSubmit, history)}
+        onClick={() =>
+          submitTrackRequest(formValuesToSubmit,auth._id, history)
+        }
         className={`green white-text btn-flat right`}
       >
         Submit Track Request
@@ -52,9 +53,10 @@ const RequestFormReview = ({
     </div>
   );
 };
-function mapStateToProps(state) {
-  return {
-    formValues: state.form.surveyForm.values,
-  };
-}
+
+const mapStateToProps = state => ({
+  auth: state.auth,
+  formValues: state.form.surveyForm.values,
+});
+
 export default connect(mapStateToProps, actions)(withRouter(RequestFormReview));

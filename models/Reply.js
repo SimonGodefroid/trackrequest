@@ -6,7 +6,7 @@ const Comment = require("./Comment");
 const ReplySchema = new Schema({
   author: { type: Schema.Types.ObjectId, ref: "User" },
   request: { type: Schema.Types.ObjectId, ref: "Request" }, // id of the request
-  comment: { type: Schema.Types.ObjectId, ref: "Comment" }, // id of the request
+  comment: { type: Schema.Types.ObjectId, ref: "Comment" }, // id of the comment
   content: String,
   votes: {
     upvotes:{ type: Object, default: {} },

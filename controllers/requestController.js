@@ -114,6 +114,17 @@
               _id: mongoose.Types.ObjectId(req.params.id),
             },
           },
+          {
+            $lookup: {
+              from: 'users',
+              localField: 'author',
+              foreignField: '_id',
+              as: 'author',
+            },
+          },
+          {
+            $unwind: { path: '$author' },
+          },
         ];
         Request.aggregate(query, (err, object) => {
           if (err) {
@@ -137,6 +148,7 @@
       },
       create: (req, res) => {
         const request = new Request(req.body);
+        request.author = req.params.userid;
         request.save((err, request) => {
           if (err) {
             return res.status(500).json({

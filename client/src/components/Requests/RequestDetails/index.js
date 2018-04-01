@@ -1,23 +1,16 @@
-import React, { Component } from "react";
-import { connect } from "react-redux";
+import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import * as actionCreators from "../modules/actions";
+
+import * as actionCreators from '../modules/actions';
 import Presenter from './components/Presenter';
 
-const mapStateToProps = (state) => {
-  return {
-    currentRequest: state.requests.currentRequest,
-    imageSourceArtist: state.requests.imageSourceArtist,
-    imageTargetArtist: state.requests.imageTargetArtist,
-    comments: state.requests.comments,
-    auth: state.auth,
-    message: state.message,
-  };
-}
+const mapStateToProps = state => ({
+  auth: state.auth,
+  comments: state.requests.comments,
+  currentRequest: state.requests.currentRequest,
+  message: state.message,
+});
 
-
-const mapDispatchToProps = (dispatch) => {
-  return bindActionCreators({...actionCreators}, dispatch)
-}
-
+const mapDispatchToProps = dispatch =>
+  bindActionCreators({ ...actionCreators }, dispatch);
 export default connect(mapStateToProps, mapDispatchToProps)(Presenter);

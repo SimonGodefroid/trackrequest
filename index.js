@@ -7,6 +7,7 @@ const keys = require("./config/keys");
 require("./models/User");
 require("./models/Request");
 require("./models/Comment");
+require("./models/Reply");
 require("./services/passport");
 
 mongoose.Promise = global.Promise;
@@ -30,10 +31,11 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 require("./routes/authRoutes")(app);
-// require("./routes/billingRoutes")(app);
+require("./routes/userRoutes")(app);
 require("./routes/requestRoutes")(app);
 require("./routes/commentRoutes")(app);
-require("./routes/userRoutes")(app);
+require("./routes/replyRoutes")(app);
+// require("./routes/billingRoutes")(app);
 
 if (process.env.NODE_ENV === "production") {
   // Express will serve up production assets

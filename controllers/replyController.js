@@ -1,17 +1,17 @@
 // CONTROLLERS
 (() => {
   'use strict';
-  const Comment = require('../models/Comment'),
-    Request = require('../models/Request'),
-    User = require('../models/User'),
+  const Request = require('../models/Request'),
+    Comment = require('../models/Comment'),
     Reply = require('../models/Reply'),
-    keys = Object.keys(Comment.schema.paths),
+    User = require('../models/User'),
+    keys = Object.keys(Request.schema.paths),
     mongoose = require('mongoose'),
     _ = require('lodash');
   module.exports = acl => {
     return {
       list: (req, res) => {
-        console.log('comments list');
+        console.log('list replies');
         let query = [];
         let skip = '';
         let limit = '';
@@ -29,6 +29,7 @@
               match[matchKeys[i]] = {};
               match[matchKeys[i]]['$in'] = [];
               let values = req['query'][matchKeys[i]].split(',');
+              console.log('values', req['query'][matchKeys[i]]);
               values.map(val => {
                 return match[matchKeys[i]]['$in'].push(parseInt(val) || val);
               });
@@ -76,15 +77,15 @@
             $limit: limit,
           },
         );
-        Comment.aggregate(
+        Reply.aggregate(
           [
             {
               $match: q,
             },
           ],
           (err, count) => {
-            Comment.count({}, (err, total) => {
-              Comment.aggregate(query, (err, comments) => {
+            Reply.count({}, (err, total) => {
+              Reply.aggregate(query, (err, replies) => {
                 if (err) {
                   console.log('An error occurred' + err);
                   return res.status(500).json({
@@ -97,8 +98,8 @@
                     limit: limit,
                     total: total,
                     results: count.length,
-                    count: comments.length,
-                    message: comments,
+                    count: replies.length,
+                    message: replies,
                   });
                 }
               });
@@ -106,137 +107,57 @@
           },
         );
       },
-      listByRequest: (req, res) => {
-        console.log('comments listByRequest');
+      read: (req, res) => {
+        console.log('read reply');
         let query = [
           {
             $match: {
-              request: mongoose.Types.ObjectId(req.params.requestid),
-            },
-          },
-
-          {
-            $lookup: {
-              from: 'users',
-              localField: 'author',
-              foreignField: '_id',
-              as: 'author',
-            },
-          },
-          {
-            $unwind: {
-              path: '$author',
-            },
-          },
-          {
-            $lookup: {
-              from: 'replies',
-              localField: 'replies',
-              foreignField: '_id',
-              as: 'replies',
-            },
-          },
-
-          {
-            $unwind: {
-              path: '$replies',
-              preserveNullAndEmptyArrays: true,
-            },
-          },
-
-          {
-            $lookup: {
-              from: 'users',
-              localField: 'replies.author',
-              foreignField: '_id',
-              as: 'replies.reply_author',
-            },
-          },
-
-          {
-            $unwind: {
-              path: '$replies.reply_author',
-              preserveNullAndEmptyArrays: true,
-            },
-          },
-          {
-            $group: {
-              _id: '$_id',
-              request: { $first : "$request"},
-              updatedAt: { $first: "$updatedAt"},
-              createdAt: { $first: "$createdAt"},
-              author: { $first: "$author"},
-              request: { $first: "$request"},
-              content: { $first: "$content"},
-              votes: { $first: "$votes"},
-              replies: { $push: '$replies' },
+              _id: mongoose.Types.ObjectId(req.params.id),
             },
           },
         ];
-        Comment.aggregate(query)
-          .exec()
-          .then(comments => {
-            console.log('comments', comments);
-            return res.status(200).json({
-              success: true,
-              count: comments.length,
-              message: comments,
-            });
-          })
-          .catch(err => {
-            console.log('An error occurred', err);
+        Reply.aggregate(query, (err, object) => {
+          if (err) {
+            console.log('An error occurred' + err);
             return res.status(500).json({
               success: false,
               message: err,
             });
-          });
-      },
-      listByAuthor: (req, res) => {
-        console.log('comments list by author');
-        let query = [
-          {
-            $match: {
-              author: mongoose.Types.ObjectId(req.params.userid),
-            },
-          },
-        ];
-        Comment.aggregate(query)
-          .exec()
-          .then(comments => {
-            return res.status(200).json({
+          } else {
+            console.log('object', object);
+            let result = object;
+            if (object.length > 0) {
+              result = object[0];
+            }
+            res.status(200).json({
               success: true,
-              message: comments,
+              message: result,
             });
-          })
-          .catch(err => {
-            console.log('An error occurred', err);
-            return res.status(500).json({
-              success: false,
-              message: err,
-            });
-          });
+          }
+        });
       },
       create: (req, res) => {
-        console.log('create comment');
-        const comment = new Comment(req.body);
-        comment.request = req.params.requestid;
-        comment.author = req.params.userid;
-        comment
+        console.log('create reply');
+        const reply = new Reply(req.body);
+        reply.request = req.params.requestid;
+        reply.comment = req.params.commentid;
+        reply.author = req.params.userid;
+        reply
           .save()
-          .then(comment => {
+          .then(reply => {
             const query = {
-              _id: mongoose.Types.ObjectId(req.params.requestid),
+              _id: mongoose.Types.ObjectId(req.params.commentid),
             };
             const update = {
-              $push: { comments: mongoose.Types.ObjectId(comment._id) },
+              $push: { replies: mongoose.Types.ObjectId(reply._id) },
             };
             const options = { new: true };
-            Request.findOneAndUpdate(query, update, options)
+            Comment.findOneAndUpdate(query, update, options)
               .exec()
-              .then(request =>
+              .then(reply =>
                 res.status(200).json({
                   success: true,
-                  message: 'You created a comment',
+                  message: 'You created a reply',
                 }),
               )
               .catch(err => {
@@ -255,46 +176,8 @@
             });
           });
       },
-      read: (req, res) => {
-        console.log('read comment');
-        let query = [
-          {
-            $match: {
-              _id: mongoose.Types.ObjectId(req.params.id),
-            },
-          },
-          {
-            $lookup: {
-              from: 'users',
-              localField: 'author',
-              foreignField: '_id',
-              as: 'author',
-            },
-          },
-        ];
-        Comment.aggregate(query)
-          .exec()
-          .then(object => {
-            let result = object;
-            if (object.length > 0) {
-              result = object[0];
-            }
-            res.status(200).json({
-              success: true,
-              message: result,
-            });
-          })
-          .catch(err => {
-            console.log('err', err);
-            return res.status(500).json({
-              success: false,
-              message: err,
-            });
-          });
-      },
       update: (req, res) => {
-        console.log('update comment');
-        Comment.findOneAndUpdate(
+        Reply.findOneAndUpdate(
           {
             _id: req.params.id,
           },
@@ -302,12 +185,12 @@
           { new: true },
         )
           .exec()
-          .then(request => {
-            return res.status(200).json({
+          .then(reply =>
+            res.status(200).json({
               success: true,
-              message: request,
-            });
-          })
+              message: reply,
+            }),
+          )
           .catch(err => {
             console.log('err', err);
             return res.status(500).json({
@@ -316,37 +199,16 @@
             });
           });
       },
+      //needs changes
       delete: (req, res) => {
-        console.log('delete comment');
-        Comment.findByIdAndRemove(req.params.id)
+        console.log('deleting reply');
+        Reply.findByIdAndRemove(req.params.id)
           .exec()
           .then(() => {
-            const query = {
-              _id: mongoose.Types.ObjectId(req.params.requestid),
-            };
-            const update = {
-              $pull: { comments: mongoose.Types.ObjectId(req.params.id) },
-            };
-            const options = { new: true };
-            Request.findOneAndUpdate(query, update, options)
-              .exec()
-              .then(request =>
-                Reply.deleteMany({ comment: req.params.id })
-                  .exec()
-                  .then(request =>
-                    res.status(200).json({
-                      success: true,
-                      message: 'You deleted that comment',
-                    }),
-                  ),
-              )
-              .catch(err => {
-                console.log('err', err);
-                return res.status(500).json({
-                  success: false,
-                  message: err,
-                });
-              });
+            return res.status(200).json({
+              success: true,
+              message: 'You deleted that track request',
+            });
           })
           .catch(err => {
             console.log('An error occurred', err);
@@ -357,7 +219,6 @@
           });
       },
       upvote: (req, res) => {
-        console.log('upvote comment');
         // we find the user by its id
         let operation;
         User.findById(req.params.userid)
@@ -370,57 +231,59 @@
                 message: 'User not found',
               });
             }
-            // if we find it and it voted for that comment already
+            // if we find it and it voted for that request already
             if (user.votes.upvotes[req.params.id]) {
               // we remove the key from his vote collection
               operation = 'unvote';
-              _.unset(user, `commentsVotes.upvotes[${req.params.id}]`);
+              _.unset(user, `votes.upvotes[${req.params.id}]`);
               // if it had already downvoted
-            } else if (user.commentsVotes.downvotes[req.params.id]) {
+            } else if (user.votes.downvotes[req.params.id]) {
               operation = 'update_vote';
               // we undo the downvote
-              _.unset(user, `commentsVotes.downvotes[${req.params.id}]`);
+              _.unset(user, `votes.downvotes[${req.params.id}]`);
               // and we do the upvote
-              user.commentsVotes.upvotes[req.params.id] = true;
-            } else if (!user.commentsVotes.upvotes[req.params.id]) {
+              user.votes.upvotes[req.params.id] = true;
+              console.log('new user value', user);
+            } else if (!user.votes.upvotes[req.params.id]) {
               operation = 'upvote';
-              // if it hadn't voted for the comment yet, we add the key and set it to true
-              user.commentsVotes.upvotes[req.params.id] = true;
+              // if it hadn't voted for the request yet, we add the key and set it to true
+              user.votes.upvotes[req.params.id] = true;
             }
             // then we update the user entry with the new value of 'votes'
-
             const query = { _id: req.params.userid };
-            const update = { commentsVotes: user.commentsVotes };
+            const update = { votes: user.votes };
             const options = { new: true };
             User.findOneAndUpdate(query, update, options)
               .exec()
               .then(user => {
-                // if this operation succeeds, we now go to update the comments...
-                // we find the comment by its id
-                Comment.findById(req.params.id)
+                // if this operation succeeds, we now go to update the requests...
+                // we find the request by its id
+                Request.findById(req.params.id)
                   .exec()
-                  .then(comment => {
-                    if (comment.votes.upvotes[req.params.userid]) {
+                  .then(request => {
+                    console.log('request', request);
+                    console.log(req.params.id);
+                    if (request.votes.upvotes[req.params.userid]) {
                       // if already upvoted we undo
-                      _.unset(comment, `votes.upvotes[${req.params.userid}]`);
-                    } else if (comment.votes.downvotes[req.params.userid]) {
+                      _.unset(request, `votes.upvotes[${req.params.userid}]`);
+                    } else if (request.votes.downvotes[req.params.userid]) {
                       // if already downvoted we undo the downvote
-                      _.unset(comment, `votes.downvotes[${req.params.userid}]`);
-                      comment.votes.upvotes[req.params.userid] = true;
-                    } else if (!comment.votes.upvotes[req.params.userid]) {
+                      _.unset(request, `votes.downvotes[${req.params.userid}]`);
+                      request.votes.upvotes[req.params.userid] = true;
+                    } else if (!request.votes.upvotes[req.params.userid]) {
                       // if it wasn't downvoted nor upvoted we downvote
-                      comment.votes.upvotes[req.params.userid] = true;
+                      request.votes.upvotes[req.params.userid] = true;
                     }
                     const query = { _id: req.params.id };
                     const update = {
-                      votes: comment.votes,
-                      upvotes: Object.keys(comment.votes.upvotes).length,
-                      downvotes: Object.keys(comment.votes.downvotes).length,
+                      votes: request.votes,
+                      upvotes: Object.keys(request.votes.upvotes).length,
+                      downvotes: Object.keys(request.votes.downvotes).length,
                     };
                     const options = { new: true };
-                    Comment.findOneAndUpdate(query, update, options)
+                    Request.findOneAndUpdate(query, update, options)
                       .exec()
-                      .then(comment => {
+                      .then(request => {
                         return res.status(200).json({
                           success: true,
                           message: 'You upvoted that track',
@@ -452,13 +315,12 @@
           });
       },
       downvote: (req, res) => {
-        console.log('downvote comment');
+        console.log('downvoting');
         // we find the user by its id
         let operation;
         User.findById(req.params.userid)
           .exec()
           .then(user => {
-            console.log('user', user.commentsVotes[req.params.id]);
             // if not found, we return an error
             if (user === null) {
               return res.status(400).json({
@@ -466,61 +328,64 @@
                 message: 'User not found',
               });
             }
-            // if we find it and it downvoted for that comment already
-            if (user.commentsVotes.downvotes[req.params.id]) {
+            // if we find it and it downvoted for that request already
+            if (user.votes.downvotes[req.params.id]) {
               // we undo the downvote
+              console.log('undo vote');
               operation = 'unvote';
-              _.unset(user, `commentsVotes.downvotes[${req.params.id}]`);
+              _.unset(user, `votes.downvotes[${req.params.id}]`);
               // if the user had upvoted that track
-            } else if (user.commentsVotes.upvotes[req.params.id]) {
+            } else if (user.votes.upvotes[req.params.id]) {
+              console.log('update vote');
               operation = 'update_vote';
               // we undo the upvote
-              _.unset(user, `commentsVotes.upvotes[${req.params.id}]`);
+              _.unset(user, `votes.upvotes[${req.params.id}]`);
               // and we downvote
-              user.commentsVotes.downvotes[req.params.id] = true;
+              user.votes.downvotes[req.params.id] = true;
               //
-            } else if (!user.commentsVotes.downvotes[req.params.id]) {
+            } else if (!user.votes.downvotes[req.params.id]) {
               operation = 'downvote';
-              // if it hadn't voted for the comment yet, we add the key and set it to true
-              user.commentsVotes.downvotes[req.params.id] = true;
+              // if it hadn't voted for the request yet, we add the key and set it to true
+              user.votes.downvotes[req.params.id] = true;
             }
             // then we update the user entry with the new value of 'votes'
             const query = { _id: req.params.userid };
-            const update = { commentsVotes: user.commentsVotes };
+            const update = { votes: user.votes };
             const options = { new: true };
             User.findOneAndUpdate(query, update, options)
               .exec()
               .then(user => {
-                // if this operation succeeds, we now go to update the comments...
-                // we find the comment by its id
-                Comment.findById(req.params.id)
+                // if this operation succeeds, we now go to update the requests...
+                // we find the request by its id
+                Request.findById(req.params.id)
                   .exec()
-                  .then(comment => {
-                    if (comment.votes.downvotes[req.params.userid]) {
+                  .then(request => {
+                    console.log('user id is ', req.params.userid);
+                    if (request.votes.downvotes[req.params.userid]) {
                       // if already downvoted we undo
-                      _.unset(comment, `votes.downvotes[${req.params.userid}]`);
-                    } else if (comment.votes.upvotes[req.params.userid]) {
+                      _.unset(request, `votes.downvotes[${req.params.userid}]`);
+                    } else if (request.votes.upvotes[req.params.userid]) {
                       // if already upvoted we undo the upvote
-                      _.unset(comment, `votes.upvotes[${req.params.userid}]`);
+                      _.unset(request, `votes.upvotes[${req.params.userid}]`);
                       // and we downvote
-                      comment.votes.downvotes[req.params.userid] = true;
-                    } else if (!comment.votes.downvotes[req.params.userid]) {
+                      request.votes.downvotes[req.params.userid] = true;
+                    } else if (!request.votes.downvotes[req.params.userid]) {
                       // if it wasn't downvoted nor upvoted we downvote
-                      comment.votes.downvotes[req.params.userid] = true;
+                      request.votes.downvotes[req.params.userid] = true;
                     }
                     const query = { _id: req.params.id };
                     const update = {
-                      votes: comment.votes,
-                      upvotes: Object.keys(comment.votes.upvotes).length,
-                      downvotes: Object.keys(comment.votes.downvotes).length,
+                      votes: request.votes,
+                      upvotes: Object.keys(request.votes.upvotes).length,
+                      downvotes: Object.keys(request.votes.downvotes).length,
                     };
                     const options = { new: true };
-                    Comment.findOneAndUpdate(query, update, options)
+                    Request.findOneAndUpdate(query, update, options)
                       .exec()
-                      .then(comment => {
+                      .then(request => {
                         return res.status(200).json({
                           success: true,
-                          message: 'You downvoted that comment',
+                          message: 'You downvoted that track',
                         });
                       })
                       .catch(err => {

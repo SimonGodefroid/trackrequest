@@ -4,7 +4,7 @@ import React, { Component } from 'react';
 import { reduxForm, Field } from 'redux-form';
 import { Link } from 'react-router-dom';
 import RequestField from './RequestField';
-import validateEmails from '../../../utils/validateEmails';
+// import validateEmails from '../../../utils/validateEmails';
 import formFields from './formFields';
 // import SelectableSong from './SelectableSong';
 import { Async } from 'react-select';
@@ -28,6 +28,7 @@ class RequestForm extends Component {
           value: res.name,
           label: res.name,
           url:res.url,
+          images: res.image,
         }));
         return { options: results };
       });

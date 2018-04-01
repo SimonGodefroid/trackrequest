@@ -1,10 +1,15 @@
 // RequestNew shows RequestForm and RequestReview
-import React, { Component } from "react";
+import { connect } from "react-redux";
 import { reduxForm } from "redux-form";
-import RequestFormReview from "../components/RequestFormReview";
+// import RequestFormReview from "../components/RequestFormReview";
 import Presenter from './components/Presenter';
+
+const mapStateToProps = (state) => (
+  {
+    auth: state.auth,
+  })
 
 export default reduxForm({
   form: "requestForm",
   destroyOnUnmount: true,
-})(Presenter);
+})(connect(mapStateToProps,null)(Presenter));

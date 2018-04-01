@@ -4,6 +4,7 @@ const { Schema } = mongoose; // short for const Schema = mongoose.Schema;
 const UserSchema = new Schema({
   googleId: String,
   username: String,
+  avatar: String,
   requests:[{ type: Schema.Types.ObjectId, ref: "Request" }],
   votes: {
     upvotes:{ type: Object, default: {} },

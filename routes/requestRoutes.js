@@ -7,7 +7,7 @@ module.exports = app => {
   const Ctrl = require("../controllers/requestController")();
   app.get("/api/requests/", Ctrl.list);
   app.get("/api/requests/:id([a-fA-F\\d]{24})", Ctrl.read);
-  app.post("/api/requests",
+  app.post("/api/requests/:userid([a-fA-F\\d]{24})",
   // requireLogin,
   Ctrl.create);
   app.patch("/api/requests/:id([a-fA-F\\d]{24})", Ctrl.update)
@@ -16,11 +16,11 @@ module.exports = app => {
   // requireLogin,
   Ctrl.delete);
   app.post(
-    "/api/requests/:id([a-fA-F\\d]{24})/user/:userid([a-fA-F\\d]{24})/upvote",
+    "/api/requests/upvote/:id([a-fA-F\\d]{24})/user/:userid([a-fA-F\\d]{24})",
     Ctrl.upvote
   );
   app.post(
-    "/api/requests/:id([a-fA-F\\d]{24})/user/:userid([a-fA-F\\d]{24})/downvote",
+    "/api/requests/downvote/:id([a-fA-F\\d]{24})/user/:userid([a-fA-F\\d]{24})",
     Ctrl.downvote
   );
 };
