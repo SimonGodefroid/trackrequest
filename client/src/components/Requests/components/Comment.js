@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import get from 'lodash/get';
+import Reply from './Reply';
 class Comment extends Component {
   constructor(props) {
     super(props);
@@ -19,34 +20,42 @@ class Comment extends Component {
   handleUpvote = () =>
     this.props.handleUpvoteCommentFn(
       this.props.comment._id,
-      this.props.user._id,
+      this.props.auth._id,
       this.props.requestId,
     );
 
   handleDownvote = () =>
     this.props.handleDownvoteCommentFn(
       this.props.comment._id,
-      this.props.user._id,
+      this.props.auth._id,
       this.props.requestId,
     );
 
   handleSubmitReply = evt => {
     this.handleClick(evt);
     this.props.handleSubmitReplyFn(
-      this.props.user._id,
+      this.props.auth._id,
       this.props.requestId,
       this.props.comment._id,
       this.state.reply,
     );
   };
 
-  handleDeleteComment = evt =>{
+  handleDeleteComment = evt => {
     evt.preventDefault();
     this.props.handleDeleteCommentFn(
       this.props.comment._id,
       this.props.requestId,
     );
-  }
+  };
+
+  renderReplies = props => {
+    if (props.comment.replies) {
+      const replies = props.comment.replies.map((rep,index) => <Reply key={index} {...rep} />);
+      return replies;
+    }
+    return null;
+  };
 
   render() {
     return (
@@ -108,7 +117,7 @@ class Comment extends Component {
               />
             </div>
           </div>
-          {this.props.comment.replies.map((rep)=><p>{rep.content}</p>)}
+          {this.renderReplies(this.props)}
         </div>
         {this.state.showReplyForm && (
           <form className="col s12" onSubmit={this.handleSubmit}>

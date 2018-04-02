@@ -1,4 +1,8 @@
 // RequestNew shows RequestForm and RequestReview
+// http://ws.audioscrobbler.com/2.0/?method=artist.gettoptracks&artist=diplo&api_key=644459a6b109d6d8d8320b2596eddb8b&format=json
+
+// http://ws.audioscrobbler.com/2.0/?method=artist.getInfo&artist=diplo&api_key=644459a6b109d6d8d8320b2596eddb8b&format=json
+
 import React, { Component } from "react";
 import RequestForm from "../../components/RequestForm";
 import RequestFormReview from "../../components/RequestFormReview";

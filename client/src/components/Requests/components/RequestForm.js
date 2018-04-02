@@ -10,6 +10,8 @@ import formFields from './formFields';
 import { Async } from 'react-select';
 import 'react-select/dist/react-select.css';
 
+// http://ws.audioscrobbler.com/2.0/?method=tag.getTopTags&api_key=644459a6b109d6d8d8320b2596eddb8b&format=json&num_res=1000
+
 class RequestForm extends Component {
   gotoArtist(value, event) {
       window.open(value.url);
@@ -111,7 +113,7 @@ class RequestForm extends Component {
             </div>
           </div>
           <div>
-            <label>Source Artist</label>
+            <label>Target Artist</label>
             <Field
               name="targetArtistSelect"
               placeholder="Search a target artist"

@@ -70,6 +70,17 @@
             $match: q,
           },
           {
+            $lookup: {
+              from: 'users',
+              localField: 'author',
+              foreignField: '_id',
+              as: 'author',
+            },
+          },
+          {
+            $unwind: { path: '$author' },
+          },
+          {
             $skip: (skip - 1) * limit,
           },
           {
@@ -81,6 +92,7 @@
             {
               $match: q,
             },
+
           ],
           (err, count) => {
             Request.count({}, (err, total) => {

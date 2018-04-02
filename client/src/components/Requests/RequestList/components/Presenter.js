@@ -60,11 +60,9 @@ class RequestList extends Component {
               </div>
             </td>
             <td colSpan={1} className={'blue'}>
-              <span  style={{ color: 'green' }}>
-                {requests[key].upvotes}
-              </span>
+              <span style={{ color: 'green' }}>{requests[key].upvotes}</span>
               <br />
-              <span  style={{ color: 'red' }}>
+              <span style={{ color: 'red' }}>
                 {requests[key].downvotes * -1}
               </span>
             </td>
@@ -72,7 +70,7 @@ class RequestList extends Component {
               <LinkToTrack id={id} text={requests[key].sourceTrack} />
             </td>
             <td className={'blue'} style={{ padding: '0' }}>
-              <LinkToTrack id={id} text={requests[key].sourceArtist} />
+              <LinkToTrack id={id} text={requests[key].sourceArtist} {...requests[key]}/>
             </td>
             <td className={'blue'} style={{ padding: '0' }}>
               <LinkToTrack id={id} text={`${requests[key].recipe}ed by`} />

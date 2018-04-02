@@ -42,10 +42,8 @@ class RequestDetails extends Component {
         this.props.match.params.id,
         this.state.comment,
       )
-      .then(() => {
-        this.props.getComments(this.props.match.params.id);
-      });
-    this.setState({ comment: '' });
+      .then(() => this.props.getComments(this.props.match.params.id))
+      .then(()=>this.setState({ comment: '' }));
   }
 
   handleDeleteComment(commentId, requestId) {
@@ -83,6 +81,7 @@ class RequestDetails extends Component {
       const commentList = this.props.comments.map(comment => (
         <Comment
           user={comment.author}
+          auth={this.props.auth}
           key={comment._id}
           comment={comment}
           requestId={this.props.match.params.id}
