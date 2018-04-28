@@ -18,6 +18,8 @@ const RequestSchema = new Schema({
   sourceTrack: String,
   targetArtist: String,
   targetArtistImage: String,
+  sourceArtistUrl: String,
+  targetArtistUrl: String,
   // category: String, => mapped to recipe ideally
   status: { type: Number, enum: [0, 1, 2, 3], default: 0 }, // 0 pending 1 accepted 2 in progress 3 done
   recipe: String,

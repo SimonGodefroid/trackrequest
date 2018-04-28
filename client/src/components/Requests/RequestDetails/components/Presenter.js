@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 import { PulseLoader } from 'halogenium';
 import get from 'lodash/get';
 import Comment from '../../components/Comment';
@@ -43,21 +44,24 @@ class RequestDetails extends Component {
         this.state.comment,
       )
       .then(() => this.props.getComments(this.props.match.params.id))
-      .then(()=>this.setState({ comment: '' }));
+      .then(() => this.setState({ comment: '' }));
   }
 
   handleDeleteComment(commentId, requestId) {
-    this.props.deleteComment(commentId, requestId)
-    .then(() => this.props.getComments(requestId));
+    this.props
+      .deleteComment(commentId, requestId)
+      .then(() => this.props.getComments(requestId));
   }
 
   handleUpvoteComment(commentId, userId, requestId) {
-    this.props.upvoteComment(commentId, userId)
-    .then(() => this.props.getComments(requestId));
+    this.props
+      .upvoteComment(commentId, userId)
+      .then(() => this.props.getComments(requestId));
   }
 
   handleDownvoteComment(commentId, userId, requestId) {
-    this.props.downvoteComment(commentId, userId)
+    this.props
+      .downvoteComment(commentId, userId)
       .then(() => this.props.getComments(requestId));
   }
 
@@ -65,14 +69,9 @@ class RequestDetails extends Component {
     console.log('here we dispatch the action to delete the request');
   }
 
-  handleSubmitReply(userId,requestId,commentId,content) {
+  handleSubmitReply(userId, requestId, commentId, content) {
     this.props
-      .postReply(
-        userId,
-        requestId,
-        commentId,
-        content,
-      )
+      .postReply(userId, requestId, commentId, content)
       .then(() => this.props.getComments(requestId));
   }
 
@@ -96,7 +95,7 @@ class RequestDetails extends Component {
   }
 
   renderDeleteButton() {
-    const {currentRequest} = this.props;
+    const { currentRequest } = this.props;
     const userId = this.props.auth._id;
     const showDeleteButton =
       currentRequest && currentRequest.author
@@ -117,7 +116,7 @@ class RequestDetails extends Component {
   }
 
   render() {
-    const { currentRequest, auth } = this.props
+    const { currentRequest, auth } = this.props;
     if (currentRequest && auth !== null) {
       return (
         <div className="row">
@@ -143,8 +142,7 @@ class RequestDetails extends Component {
                   </span>-<span> {currentRequest.sourceTrack}</span>
                 </h4>
                 <h4 className="center">
-                  {currentRequest.recipe}ed by{' '}
-                  {currentRequest.targetArtist}
+                  {currentRequest.recipe}ed by {currentRequest.targetArtist}
                 </h4>
                 <h4 className="center">
                   <div
@@ -187,34 +185,56 @@ class RequestDetails extends Component {
                     </span>
                   </p>
                 </div>
-                <p className="center">
-                  <img
-                    className={'circle responsive-img overlay '}
-                    alt={''}
-                    style={{ border: '4px solid white', margin: '1em 2em ' }}
-                    src={currentRequest.sourceArtistImage}
-                  />
-                  <img
-                    className={'circle responsive-img '}
-                    alt={''}
-                    style={{ border: '4px solid white', margin: '1em 2em ' }}
-                    src={currentRequest.targetArtistImage}
-                  />
-                </p>
-              </div>
-              <div className="card-content">
-                <span className="card-title center">
-                  {`"${currentRequest.body}"`}
-                </span>
-                <span className="card-title center">
-                  submitted by{' '}
-                  {get(currentRequest, 'author.username', '')}, on{' '}
-                  {currentRequest &&
-                    currentRequest.createdAt &&
-                    new Date(
-                      currentRequest.createdAt,
-                    ).toLocaleDateString('fr-FR')}.
-                </span>
+                <div className="center">
+                  <div>
+                  <span className={`imageholder`}>
+                    <a href={currentRequest.sourceArtistUrl || ''}>
+                      <img
+                        className={'circle responsive-img overlay image'}
+                        alt={''}
+                        style={{
+                          border: '4px solid white',
+                          margin: '1em 2em ',
+                        }}
+                        src={currentRequest.sourceArtistImage}
+                      />
+                      <div className={`middle`}>
+                      <div className={`text`}>{currentRequest.sourceArtist}</div>
+                      </div>
+                      </a>
+                    </span>
+                    <span className={`imageholder`}>
+                    <a href={currentRequest.targetArtistUrl || ''}>
+                      <img
+                        className={'circle responsive-img image'}
+                        alt={''}
+                        style={{
+                          border: '4px solid white',
+                          margin: '1em 2em ',
+                        }}
+                        src={currentRequest.targetArtistImage}
+                      />
+                      <div className={`middle`}>
+                      <div className={`text`}>{currentRequest.targetArtist}</div>
+                      </div>
+                    </a>
+                    </span>
+                  </div>
+                </div>
+                <div className="card-content">
+                  <span className="card-title center">
+                    {`"${currentRequest.body}"`}
+                  </span>
+                  <span className="card-title center">
+                    submitted by {get(currentRequest, 'author.username', '')},
+                    on{' '}
+                    {currentRequest &&
+                      currentRequest.createdAt &&
+                      new Date(currentRequest.createdAt).toLocaleDateString(
+                        'fr-FR',
+                      )}.
+                  </span>
+                </div>
               </div>
             </div>
 

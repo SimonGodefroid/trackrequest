@@ -4,19 +4,20 @@ import React, { Component } from 'react';
 import { reduxForm, Field } from 'redux-form';
 import { Link } from 'react-router-dom';
 import RequestField from './RequestField';
-// import validateEmails from '../../../utils/validateEmails';
 import formFields from './formFields';
-// import SelectableSong from './SelectableSong';
+import { RECIPES } from './formOptions';
 import { Async } from 'react-select';
+import Select from 'react-select';
 import 'react-select/dist/react-select.css';
 
 // http://ws.audioscrobbler.com/2.0/?method=tag.getTopTags&api_key=644459a6b109d6d8d8320b2596eddb8b&format=json&num_res=1000
 
 class RequestForm extends Component {
-  gotoArtist(value, event) {
-      window.open(value.url);
-    }
-  getOptionsArtists(input) {
+  gotoArtist = (value, event) => {
+    window.open(value.url);
+  };
+
+  getOptionsArtists = input => {
     if (!input) {
       return Promise.resolve({ options: [] });
     }
@@ -29,13 +30,13 @@ class RequestForm extends Component {
         const results = json.results.artistmatches.artist.map(res => ({
           value: res.name,
           label: res.name,
-          url:res.url,
+          url: res.url,
           images: res.image,
         }));
         return { options: results };
       });
-  }
-  getOptionsTracks(input) {
+  };
+  getOptionsTracks = input => {
     if (!input) {
       return Promise.resolve({ options: [] });
     }
@@ -50,10 +51,11 @@ class RequestForm extends Component {
         }));
         return { options: results };
       });
-  }
-  renderFields() {
-    return _.map(formFields.filter(field=>field.select===false), ({ label, name }) => {
-      return (
+  };
+  renderFields = () => {
+    return _.map(
+      formFields.filter(field => field.select === false),
+      ({ label, name }) => (
         <Field
           key={name}
           component={RequestField}
@@ -61,14 +63,18 @@ class RequestForm extends Component {
           label={label}
           name={name}
         />
-      );
-    });
-  }
+      ),
+    );
+  };
 
   render() {
     return (
-      <div className={'container white'} style={{ marginTop: '20px' }}>
-        <form onSubmit={this.props.handleSubmit(this.props.onRequestSubmit)}>
+      <div className={'container white'} style={{ marginTop: '100px' }}>
+        <h3 className={`center`}>Create your request</h3>
+        <form
+          onSubmit={this.props.handleSubmit(this.props.onRequestSubmit)}
+          style={{ margin: '100px' }}
+        >
           <div>
             <label>Source Track</label>
             <Field
@@ -76,21 +82,19 @@ class RequestForm extends Component {
               placeholder="Search for the source track"
               component={props => (
                 <Async
-                loadOptions={this.getOptionsTracks}
-                value={props.input.value}
-                onChange={props.input.onChange}
-                onBlurResetsInput={false}
-                onBlur={() => {
-                  props.input.onBlur(props.input.value);
-                }}
-                {...props}
+                  loadOptions={this.getOptionsTracks}
+                  value={props.input.value}
+                  onChange={props.input.onChange}
+                  onBlurResetsInput={false}
+                  onBlur={() => {
+                    props.input.onBlur(props.input.value);
+                  }}
+                  {...props}
                 />
               )}
             />
-            <div className={`red-text`} style={{ marginBottom: '20px' }}>
-            </div>
+            <div className={`red-text`} style={{ marginBottom: '20px' }} />
           </div>
-
           <div>
             <label>Source Artist</label>
             <Field
@@ -98,19 +102,18 @@ class RequestForm extends Component {
               placeholder="Search for the source artist"
               component={props => (
                 <Async
-                onValueClick={this.gotoArtist}
-                loadOptions={this.getOptionsArtists}
-                value={props.input.value}
-                onChange={props.input.onChange}
-                {...props}
+                  onValueClick={this.gotoArtist}
+                  loadOptions={this.getOptionsArtists}
+                  value={props.input.value}
+                  onChange={props.input.onChange}
+                  {...props}
                   onBlur={() => {
                     props.input.onBlur(props.input.value);
                   }}
                 />
               )}
             />
-            <div className={`red-text`} style={{ marginBottom: '20px' }}>
-            </div>
+            <div className={`red-text`} style={{ marginBottom: '20px' }} />
           </div>
           <div>
             <label>Target Artist</label>
@@ -127,34 +130,59 @@ class RequestForm extends Component {
                   onBlur={() => {
                     props.input.onBlur(props.input.value);
                   }}
-                  // simpleValue
                 />
               )}
             />
-            <div className={`red-text`} style={{ marginBottom: '20px' }}>
-            </div>
+            <div className={`red-text`} style={{ marginBottom: '20px' }} />
+          </div>
+          <div>
+            <label>Recipe</label>
+            <Field
+              name="recipeSelect"
+              component={props => (
+                <Select
+                  {...props}
+					        // multi
+					        options={RECIPES}
+					        placeholder="Select a recipe"
+                  value={props.input.value}
+                  onChange={props.input.onChange}
+                  onBlur={() => {
+                    props.input.onBlur(props.input.value);
+                  }}
+                />
+              )}
+            />
+            <div className={`red-text`} style={{ marginBottom: '20px' }} />
           </div>
           {this.renderFields()}
-          <button className={`teal btn-flat right white-text`} type={`submit`}>
-            Next
-            <i className={`material-icons right`}>done</i>
-          </button>
-          <Link
-            to={`/requests`}
-            className={`red btn-flat left white-text`}
-            type={`submit`}
-            onClick={()=>{this.props.destroy()}}
-          >
-            Cancel
-            <i className={`material-icons left`}>cancel</i>
-          </Link>
+          <div style={{ paddingTop: '20px' }}>
+            <button
+              className={`teal btn-flat right white-text`}
+              type={`submit`}
+            >
+              Next
+              <i className={`material-icons right`}>done</i>
+            </button>
+            <Link
+              to={`/requests`}
+              className={`red btn-flat left white-text`}
+              type={`submit`}
+              onClick={() => {
+                this.props.destroy();
+              }}
+            >
+              Cancel
+              <i className={`material-icons left`}>cancel</i>
+            </Link>
+          </div>
         </form>
       </div>
     );
   }
 }
 
-function validate(values) {
+const validate = values => {
   const errors = {};
   // errors.recipients = validateEmails(values.recipients || '');
   _.each(formFields, ({ name }) => {
@@ -164,7 +192,7 @@ function validate(values) {
   });
 
   return errors;
-}
+};
 
 // handleSubmit comes from surveyForm
 export default reduxForm({

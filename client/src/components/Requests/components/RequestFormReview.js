@@ -32,8 +32,8 @@ const RequestFormReview = ({
   // make helper method to pass as values the stuff for react-select fields
   const formValuesToSubmit = sanitizeFormValues(formValues);
   return (
-    <div>
-      <h5>Please confirm your entries !</h5>
+    <div className={'container white'} style={{ marginTop: '100px' }}>
+      <h5 className={`center`}>Please confirm your entries !</h5>
       {reviewFields}
       <button
         className={`yellow darken-3 white-text btn-flat`}

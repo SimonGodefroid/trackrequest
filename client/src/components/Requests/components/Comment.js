@@ -51,13 +51,17 @@ class Comment extends Component {
 
   renderReplies = props => {
     if (props.comment.replies) {
-      const replies = props.comment.replies.map((rep,index) => <Reply key={index} {...rep} />);
+      const replies = props.comment.replies.map((rep, index) => (
+        <Reply key={index} {...rep} />
+      ));
       return replies;
     }
     return null;
   };
 
   render() {
+    const showDeleteButton =
+      this.props.comment.author._id === this.props.auth._id;
     return (
       <div className="col s12 m8 offset-m0 l10 offset-l0">
         <div className="card-panel grey lighten-5 z-depth-1">
@@ -103,12 +107,14 @@ class Comment extends Component {
             </div>
             <div className="col s10">
               <p className="black-text">{this.props.comment.content}</p>
-              <input
-                className="btn waves-effect waves-light red right"
-                type="submit"
-                value="delete"
-                onClick={this.handleDeleteComment}
-              />
+              {showDeleteButton && (
+                <input
+                  className="btn waves-effect waves-light red right"
+                  type="submit"
+                  value="delete"
+                  onClick={this.handleDeleteComment}
+                />
+              )}
               <input
                 className="btn waves-effect waves-light right"
                 type="submit"
