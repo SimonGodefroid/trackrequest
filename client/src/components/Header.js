@@ -35,7 +35,7 @@ class Header extends Component {
                   to={this.props.auth ? '/requests' : '/'}
                   className="left brand-logo"
                 >
-                  Tracks Request
+                  Tracks Requests
                 </Link>
                 <ul className="right">{this.renderContent()}</ul>
               </div>
@@ -47,7 +47,5 @@ class Header extends Component {
   }
 }
 
-function mapStateToProps({ auth }) {
-  return { auth };
-}
+const mapStateToProps = ({ auth }) =>{ auth };
 export default connect(mapStateToProps)(Header);
