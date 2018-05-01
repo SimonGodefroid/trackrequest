@@ -2,10 +2,10 @@ import axios from 'axios';
 import {
   FETCH_USER,
   FETCH_REQUESTS,
+  DELETE_REQUEST,
   FETCH_CURRENT_REQUEST,
   UPVOTE_REQUEST,
   DOWNVOTE_REQUEST,
-  DELETE_REQUEST,
   GET_COMMENTS,
   POST_COMMENT,
   DELETE_COMMENT,
@@ -44,6 +44,12 @@ export const submitTrackRequest = (
 export const fetchRequests = () => async dispatch => {
   const res = await axios.get('/api/requests');
   dispatch({ type: FETCH_REQUESTS, payload: res.data });
+};
+
+export const deleteRequest = (id, history) => async dispatch => {
+  const res = await axios.delete(`/api/requests/${id}`);
+  dispatch({ type: DELETE_REQUEST, payload:{} });
+  history.push('/requests');
 };
 
 export const fetchCurrentRequest = id => async dispatch => {

@@ -1,6 +1,7 @@
 import {
   FETCH_REQUESTS,
   FETCH_CURRENT_REQUEST,
+  DELETE_REQUEST,
   CLEAR_CURRENT_REQUEST,
   UPVOTE_REQUEST,
   DOWNVOTE_REQUEST,
@@ -32,6 +33,10 @@ export const reducer = (state = { ...initialState }, action) => {
       return {
         ...state,
         currentRequest: action.payload.message,
+      };
+    case DELETE_REQUEST:
+      return {
+        ...state,
       };
     case CLEAR_CURRENT_REQUEST:
       return {

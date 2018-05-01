@@ -2,10 +2,7 @@ import React, { Component } from 'react';
 import get from 'lodash/get';
 import Reply from './Reply';
 class Comment extends Component {
-  constructor(props) {
-    super(props);
-    this.state = { showReplyForm: false, reply: '' };
-  }
+  state = { showReplyForm: false, reply: '' };
 
   handleClick = evt => {
     evt.preventDefault();

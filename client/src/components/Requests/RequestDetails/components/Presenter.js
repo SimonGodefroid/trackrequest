@@ -7,12 +7,9 @@ import Button from 'material-ui/Button';
 import './request-details.css';
 
 class RequestDetails extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      comment: '',
-    };
-  }
+  state = {
+    comment: '',
+  };
 
   componentDidMount() {
     this.props
@@ -24,12 +21,12 @@ class RequestDetails extends Component {
     this.props.clearCurrentRequest(this.props.match.params.id);
   }
 
-  handleChange = (evt) => {
+  handleChange = evt => {
     evt.preventDefault();
     this.setState({ comment: evt.target.value });
-  }
+  };
 
-  handleSubmitComment = (evt) => {
+  handleSubmitComment = evt => {
     evt.preventDefault();
     this.props
       .postComment(
@@ -39,35 +36,35 @@ class RequestDetails extends Component {
       )
       .then(() => this.props.getComments(this.props.match.params.id))
       .then(() => this.setState({ comment: '' }));
-  }
+  };
 
-  handleDeleteComment = (commentId, requestId) =>{
+  handleDeleteComment = (commentId, requestId) => {
     this.props
       .deleteComment(commentId, requestId)
       .then(() => this.props.getComments(requestId));
-  }
+  };
 
   handleUpvoteComment = (commentId, userId, requestId) => {
     this.props
       .upvoteComment(commentId, userId)
       .then(() => this.props.getComments(requestId));
-  }
+  };
 
-  handleDownvoteComment = (commentId, userId, requestId) =>{
+  handleDownvoteComment = (commentId, userId, requestId) => {
     this.props
       .downvoteComment(commentId, userId)
       .then(() => this.props.getComments(requestId));
-  }
+  };
 
-  handleDeleteRequest = ()=> {
-    console.log('here we dispatch the action to delete the request');
-  }
+  handleDeleteRequest = () => {
+    this.props.deleteRequest(this.props.match.params.id,this.props.history);
+  };
 
-  handleSubmitReply = (userId, requestId, commentId, content) =>{
+  handleSubmitReply = (userId, requestId, commentId, content) => {
     this.props
       .postReply(userId, requestId, commentId, content)
       .then(() => this.props.getComments(requestId));
-  }
+  };
 
   renderComments() {
     if (this.props.comments && this.props.comments.length > 0) {
@@ -136,8 +133,11 @@ class RequestDetails extends Component {
                   </span>-<span> {currentRequest.sourceTrack}</span>
                 </h4>
                 <h4 className="center">
-                  {currentRequest.recipe}ed by <span style={{fontWeight:'bold'}}>{currentRequest.targetArtist}</span>
-                  {' '}or anyone else
+                  {currentRequest.recipe}ed by{' '}
+                  <span style={{ fontWeight: 'bold' }}>
+                    {currentRequest.targetArtist}
+                  </span>{' '}
+                  or anyone else
                 </h4>
                 <h4 className="center">
                   <div
@@ -182,37 +182,41 @@ class RequestDetails extends Component {
                 </div>
                 <div className="center">
                   <div>
-                  <span className={`imageholder`}>
-                    <a href={currentRequest.sourceArtistUrl || ''}>
-                      <img
-                        className={'circle responsive-img overlay image'}
-                        alt={''}
-                        style={{
-                          border: '4px solid white',
-                          margin: '1em 2em ',
-                        }}
-                        src={currentRequest.sourceArtistImage}
-                      />
-                      <div className={`middle`}>
-                      <div className={`text`}>{currentRequest.sourceArtist}</div>
-                      </div>
+                    <span className={`imageholder`}>
+                      <a href={currentRequest.sourceArtistUrl || ''}>
+                        <img
+                          className={'circle responsive-img overlay image'}
+                          alt={''}
+                          style={{
+                            border: '4px solid white',
+                            margin: '1em 2em ',
+                          }}
+                          src={currentRequest.sourceArtistImage}
+                        />
+                        <div className={`middle`}>
+                          <div className={`text`}>
+                            {currentRequest.sourceArtist}
+                          </div>
+                        </div>
                       </a>
                     </span>
                     <span className={`imageholder`}>
-                    <a href={currentRequest.targetArtistUrl || ''}>
-                      <img
-                        className={'circle responsive-img image'}
-                        alt={''}
-                        style={{
-                          border: '4px solid white',
-                          margin: '1em 2em ',
-                        }}
-                        src={currentRequest.targetArtistImage}
-                      />
-                      <div className={`middle`}>
-                      <div className={`text`}>{currentRequest.targetArtist}</div>
-                      </div>
-                    </a>
+                      <a href={currentRequest.targetArtistUrl || ''}>
+                        <img
+                          className={'circle responsive-img image'}
+                          alt={''}
+                          style={{
+                            border: '4px solid white',
+                            margin: '1em 2em ',
+                          }}
+                          src={currentRequest.targetArtistImage}
+                        />
+                        <div className={`middle`}>
+                          <div className={`text`}>
+                            {currentRequest.targetArtist}
+                          </div>
+                        </div>
+                      </a>
                     </span>
                   </div>
                 </div>
@@ -254,7 +258,7 @@ class RequestDetails extends Component {
                       variant="raised"
                       color="primary"
                       type="submit"
-                      >
+                    >
                       Add a comment
                     </Button>
                   </div>
