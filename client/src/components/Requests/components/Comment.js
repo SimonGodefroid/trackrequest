@@ -5,8 +5,6 @@ class Comment extends Component {
   constructor(props) {
     super(props);
     this.state = { showReplyForm: false, reply: '' };
-    this.handleChange = this.handleChange.bind(this);
-    this.handleClick = this.handleClick.bind(this);
   }
 
   handleClick = evt => {
@@ -130,6 +128,7 @@ class Comment extends Component {
             <div className="row">
               <div className="input-field col s8">
                 <i className="material-icons prefix">account_circle</i>
+
                 <textarea
                   id="icon_prefix"
                   rows={'10'}

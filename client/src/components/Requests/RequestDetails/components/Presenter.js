@@ -11,13 +11,6 @@ class RequestDetails extends Component {
     this.state = {
       comment: '',
     };
-    this.handleChange = this.handleChange.bind(this);
-    this.handleSubmitComment = this.handleSubmitComment.bind(this);
-    this.handleDeleteComment = this.handleDeleteComment.bind(this);
-    this.handleDeleteRequest = this.handleDeleteRequest.bind(this);
-    this.handleUpvoteComment = this.handleUpvoteComment.bind(this);
-    this.handleDownvoteComment = this.handleDownvoteComment.bind(this);
-    this.handleSubmitReply = this.handleSubmitReply.bind(this);
   }
 
   componentDidMount() {
@@ -30,12 +23,12 @@ class RequestDetails extends Component {
     this.props.clearCurrentRequest(this.props.match.params.id);
   }
 
-  handleChange(evt) {
+  handleChange = (evt) => {
     evt.preventDefault();
     this.setState({ comment: evt.target.value });
   }
 
-  handleSubmitComment(evt) {
+  handleSubmitComment = (evt) => {
     evt.preventDefault();
     this.props
       .postComment(
@@ -47,29 +40,29 @@ class RequestDetails extends Component {
       .then(() => this.setState({ comment: '' }));
   }
 
-  handleDeleteComment(commentId, requestId) {
+  handleDeleteComment = (commentId, requestId) =>{
     this.props
       .deleteComment(commentId, requestId)
       .then(() => this.props.getComments(requestId));
   }
 
-  handleUpvoteComment(commentId, userId, requestId) {
+  handleUpvoteComment = (commentId, userId, requestId) => {
     this.props
       .upvoteComment(commentId, userId)
       .then(() => this.props.getComments(requestId));
   }
 
-  handleDownvoteComment(commentId, userId, requestId) {
+  handleDownvoteComment = (commentId, userId, requestId) =>{
     this.props
       .downvoteComment(commentId, userId)
       .then(() => this.props.getComments(requestId));
   }
 
-  handleDeleteRequest() {
+  handleDeleteRequest = ()=> {
     console.log('here we dispatch the action to delete the request');
   }
 
-  handleSubmitReply(userId, requestId, commentId, content) {
+  handleSubmitReply = (userId, requestId, commentId, content) =>{
     this.props
       .postReply(userId, requestId, commentId, content)
       .then(() => this.props.getComments(requestId));
@@ -142,7 +135,8 @@ class RequestDetails extends Component {
                   </span>-<span> {currentRequest.sourceTrack}</span>
                 </h4>
                 <h4 className="center">
-                  {currentRequest.recipe}ed by {currentRequest.targetArtist}
+                  {currentRequest.recipe}ed by <span style={{fontWeight:'bold'}}>{currentRequest.targetArtist}</span>
+                  {' '}or anyone else
                 </h4>
                 <h4 className="center">
                   <div
@@ -237,7 +231,6 @@ class RequestDetails extends Component {
                 </div>
               </div>
             </div>
-
             <div className="row">
               <form className="col s12" onSubmit={this.handleSubmitComment}>
                 <div className="row">
