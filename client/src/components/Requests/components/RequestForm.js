@@ -5,7 +5,7 @@ import { reduxForm, Field } from 'redux-form';
 import { Link } from 'react-router-dom';
 import RequestField from './RequestField';
 import formFields from './formFields';
-import { RECIPES } from './formOptions';
+import { RECIPES, FLAVOURS } from './formOptions';
 import { Async } from 'react-select';
 import Select from 'react-select';
 import 'react-select/dist/react-select.css';
@@ -145,6 +145,26 @@ class RequestForm extends Component {
 					        // multi
 					        options={RECIPES}
 					        placeholder="Select a recipe"
+                  value={props.input.value}
+                  onChange={props.input.onChange}
+                  onBlur={() => {
+                    props.input.onBlur(props.input.value);
+                  }}
+                />
+              )}
+            />
+            <div className={`red-text`} style={{ marginBottom: '20px' }} />
+          </div>
+          <div>
+            <label>Flavour</label>
+            <Field
+              name="flavourSelect"
+              component={props => (
+                <Select
+                  {...props}
+					        // multi
+					        options={FLAVOURS}
+					        placeholder="Select a flavour"
                   value={props.input.value}
                   onChange={props.input.onChange}
                   onBlur={() => {

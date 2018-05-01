@@ -3,8 +3,9 @@ import { Link } from 'react-router-dom';
 import { PulseLoader } from 'halogenium';
 import get from 'lodash/get';
 import Comment from '../../components/Comment';
+import Button from 'material-ui/Button';
 import './request-details.css';
-// https://api.qwant.com/api/search/images?count=10&offset=1&q=diplo
+
 class RequestDetails extends Component {
   constructor(props) {
     super(props);
@@ -248,12 +249,14 @@ class RequestDetails extends Component {
                     />
                   </div>
                   <div className="input-field col s12 m2 l2 center">
-                    <input
+                    <Button
                       disabled={this.state.comment.length === 0}
-                      className="btn waves-effect waves-light"
+                      variant="raised"
+                      color="primary"
                       type="submit"
-                      value="Add Comment"
-                    />
+                      >
+                      Add a comment
+                    </Button>
                   </div>
                 </div>
               </form>
