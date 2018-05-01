@@ -9,6 +9,7 @@ import { RECIPES, FLAVOURS } from './formOptions';
 import { Async } from 'react-select';
 import Select from 'react-select';
 import 'react-select/dist/react-select.css';
+import Suggestions from './Suggestions';
 
 // http://ws.audioscrobbler.com/2.0/?method=tag.getTopTags&api_key=644459a6b109d6d8d8320b2596eddb8b&format=json&num_res=1000
 
@@ -22,7 +23,9 @@ class RequestForm extends Component {
       return Promise.resolve({ options: [] });
     }
     return fetch(
-      `http://ws.audioscrobbler.com/2.0/?method=artist.search&artist=${input}&api_key=644459a6b109d6d8d8320b2596eddb8b&format=json`,
+      `http://ws.audioscrobbler.com/2.0/?method=artist.search&artist=${input}&api_key=${
+        process.env.REACT_APP_LAST_KEY
+      }&format=json`,
     )
       .then(response => response.json())
       .then(json => {
@@ -72,6 +75,8 @@ class RequestForm extends Component {
     return (
       <div className={'container white'} style={{ marginTop: '100px' }}>
         <h3 className={`center`}>Create your request</h3>
+
+        <Suggestions />
         <form
           onSubmit={this.props.handleSubmit(this.props.onRequestSubmit)}
           style={{ margin: '100px' }}
@@ -143,9 +148,9 @@ class RequestForm extends Component {
               component={props => (
                 <Select
                   {...props}
-					        // multi
-					        options={RECIPES}
-					        placeholder="Select a recipe"
+                  // multi
+                  options={RECIPES}
+                  placeholder="Select a recipe"
                   value={props.input.value}
                   onChange={props.input.onChange}
                   onBlur={() => {
@@ -163,9 +168,9 @@ class RequestForm extends Component {
               component={props => (
                 <Select
                   {...props}
-					        // multi
-					        options={FLAVOURS}
-					        placeholder="Select a flavour"
+                  // multi
+                  options={FLAVOURS}
+                  placeholder="Select a flavour"
                   value={props.input.value}
                   onChange={props.input.onChange}
                   onBlur={() => {
