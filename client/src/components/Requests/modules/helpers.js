@@ -1,6 +1,7 @@
 import unset from 'lodash/unset';
 
 export const sanitizeFormValues = formValues => {
+  console.log('formValues',formValues)
   const cleanSourceArtistImage = formValues.sourceArtistSelect.images.filter(
     image => image.size === 'large',
   )[0]['#text'];
@@ -19,13 +20,12 @@ export const sanitizeFormValues = formValues => {
   cleanValues.sourceArtistUrl = sourceArtistUrl;
   cleanValues.targetArtistUrl = targetArtistUrl;
   cleanValues.flavour = formValues.flavourSelect.value;
+  cleanValues.songUrl = formValues.sourceTrackSelect.songUrl;
   unset(cleanValues, 'sourceArtistSelect');
   unset(cleanValues, 'sourceTrackSelect');
   unset(cleanValues, 'targetArtistSelect');
   unset(cleanValues, 'targetArtistSelect');
   unset(cleanValues, 'recipeSelect');
   unset(cleanValues, 'flavourSelect');
-  debugger;
-  console.log(cleanValues);
   return cleanValues;
 };

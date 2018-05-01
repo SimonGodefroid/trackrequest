@@ -47,7 +47,8 @@ class RequestForm extends Component {
       .then(json => {
         const results = json.results.trackmatches.track.map(res => ({
           value: res.name,
-          label: res.name,
+          label: `${res.name} by ${res.artist}`,
+          songUrl: res.url,
         }));
         return { options: results };
       });
@@ -86,10 +87,10 @@ class RequestForm extends Component {
                   value={props.input.value}
                   onChange={props.input.onChange}
                   onBlurResetsInput={false}
+                  {...props}
                   onBlur={() => {
                     props.input.onBlur(props.input.value);
                   }}
-                  {...props}
                 />
               )}
             />
