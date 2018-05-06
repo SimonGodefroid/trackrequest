@@ -13,7 +13,7 @@ const Landing = () => {
 
 				My first request would be that Tyler makes an album of his greatests hits just by himself alone at the piano, really like what William Sheller did.
 			</p>
-			<iframe width="560" height="315" src="https://www.youtube.com/embed/tEkIR9wDmkU" frameborder="0" title={'Tyler'} allowfullscreen></iframe>
+			<iframe width="560" height="315" src="https://www.youtube.com/embed/tEkIR9wDmkU" frameBorder="0" title={'Tyler'} allowFullScreen></iframe>
 		</div>
 	);
 };

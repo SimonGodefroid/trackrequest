@@ -1,4 +1,4 @@
-// SurveyFormReview show user their form inputs for review
+// RequestFormReview show user their form inputs for review
 import React from 'react';
 import { connect } from 'react-redux';
 import formFields from './formFields';
@@ -56,7 +56,7 @@ const RequestFormReview = ({
 
 const mapStateToProps = state => ({
   auth: state.auth,
-  formValues: state.form.surveyForm.values,
+  formValues: state.form.requestForm.values,
 });
 
 export default connect(mapStateToProps, actions)(withRouter(RequestFormReview));

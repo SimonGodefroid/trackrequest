@@ -21,7 +21,6 @@ class App extends Component {
           <Route exact path={`/requests`} component={Dashboard} />
           <Route path={`/requests/new`} component={RequestNew} />
           <Route path={`/request/:id`} component={RequestDetails} />
-          {/*<Route path={`/test`} component={RequestListTest} />*/}
         </div>
       </BrowserRouter>
     );
