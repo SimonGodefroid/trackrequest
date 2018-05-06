@@ -4,7 +4,7 @@ const CommentSchema = require("./Comment");
 const UserSchema = require("./User");
 const RequestSchema = new Schema({
   // title: String, // title of the request
-  body: String,
+  message: String,
   author: { type: Schema.Types.ObjectId, ref: "User" },
   upvotes: { type: Number, default: 0, min: 0 },
   downvotes: { type: Number, default: 0, min: 0 },

@@ -42,11 +42,12 @@ export const submitTrackRequest = (
 };
 
 export const fetchRequests = () => async dispatch => {
-  const res = await axios.get('/api/requests');
+  const res = await axios.get('/api/requests?sort[upvotes]=-1');
   dispatch({ type: FETCH_REQUESTS, payload: res.data });
 };
 
 export const deleteRequest = (id, history) => async dispatch => {
+  // eslint-disable-next-line
   const res = await axios.delete(`/api/requests/${id}`);
   dispatch({ type: DELETE_REQUEST, payload:{} });
   history.push('/requests');

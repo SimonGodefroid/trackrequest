@@ -233,7 +233,7 @@ export const FLAVOURS = [
 {'label':'chicano rap','value':'chicano rap'},
 {'label':'chicha','value':'chicha'},
 {'label':'chicken scratch','value':'chicken scratch'},
-{'label':'children\s music','value':'children\'s music'},
+{'label':'children\'s music','value':'children\'s music'},
 {'label':'chillout','value':'chillout'},
 {'label':'chillwave','value':'chillwave'},
 {'label':'chimurenga','value':'chimurenga'},

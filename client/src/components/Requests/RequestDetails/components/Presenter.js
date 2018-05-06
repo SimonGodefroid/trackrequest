@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
 import { PulseLoader } from 'halogenium';
 import get from 'lodash/get';
-import Comment from '../../components/Comment';
 import Button from 'material-ui/Button';
+
+import Comment from '../../components/Comment';
+import VoteButtons from '../../../Core/VoteButtons';
 import './request-details.css';
 
 class RequestDetails extends Component {
@@ -125,18 +126,18 @@ class RequestDetails extends Component {
                   {this.renderDeleteButton()}
                 </div>
                 <h4 className="center">
+                <a href={currentRequest.sourceArtistUrl} style={{color:'white'}} target='blank'>
                   <span
                     style={{ cursor: 'pointer' }}
-                    onClick={() => console.log('event')}
-                  >
-                    {currentRequest.sourceArtist}{' '}
-                  </span>-<span> {currentRequest.sourceTrack}</span>
+                  >{currentRequest.sourceArtist}{' '}</span></a>-
+                    <a href={currentRequest.songUrl} style={{color:'white'}} target='blank'><span> {currentRequest.sourceTrack}</span></a>
                 </h4>
                 <h4 className="center">
                   {currentRequest.recipe}ed by{' '}
+                  <a href={currentRequest.targetArtistUrl} style={{color:'white'}} target='blank'>
                   <span style={{ fontWeight: 'bold' }}>
                     {currentRequest.targetArtist}
-                  </span>{' '}
+                  </span></a>{' '}
                   or anyone else
                 </h4>
                 <h4 className="center">
@@ -154,6 +155,10 @@ class RequestDetails extends Component {
                       <i className={'material-icons'}>audiotrack</i>
                     </span>
                   </p>
+                  <VoteButtons
+                    request={currentRequest}
+                    user={this.props.auth}
+                    fetchOption={'single'}/>
                   <p className={'center'} style={{ verticalAlign: 'middle' }}>
                     <span
                       className={'valign-wrapper center'}
@@ -183,7 +188,7 @@ class RequestDetails extends Component {
                 <div className="center">
                   <div>
                     <span className={`imageholder`}>
-                      <a href={currentRequest.sourceArtistUrl || ''}>
+                      <a href={currentRequest.sourceArtistUrl || ''} target='blank'>
                         <img
                           className={'circle responsive-img overlay image'}
                           alt={''}
@@ -201,7 +206,7 @@ class RequestDetails extends Component {
                       </a>
                     </span>
                     <span className={`imageholder`}>
-                      <a href={currentRequest.targetArtistUrl || ''}>
+                      <a href={currentRequest.targetArtistUrl || ''} target='blank'>
                         <img
                           className={'circle responsive-img image'}
                           alt={''}
@@ -222,7 +227,7 @@ class RequestDetails extends Component {
                 </div>
                 <div className="card-content">
                   <span className="card-title center">
-                    {`"${currentRequest.body}"`}
+                    {`"${currentRequest.message}"`}
                   </span>
                   <span className="card-title center">
                     submitted by {get(currentRequest, 'author.username', '')},

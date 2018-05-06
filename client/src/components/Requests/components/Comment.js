@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import get from 'lodash/get';
 import Reply from './Reply';
+import CustomizedChip from './CustomizedChip';
 class Comment extends Component {
   state = { showReplyForm: false, reply: '' };
 
@@ -91,14 +92,7 @@ class Comment extends Component {
               </a>
             </div>
             <div className="col s2">
-              <div className="chip">
-                <img
-                  src={`${this.props.user.avatar}`}
-                  alt={`${this.props.user.username} profile`}
-                  className="circle responsive-img"
-                />
-                {`${this.props.user.username.substring(0, 5)}...`}
-              </div>
+              <CustomizedChip user={this.props.user}/>
             </div>
             <div className="col s10">
               <p className="black-text">{this.props.comment.content}</p>
