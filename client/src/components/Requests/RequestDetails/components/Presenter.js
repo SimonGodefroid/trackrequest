@@ -240,7 +240,7 @@ class RequestDetails extends Component {
 									</div>
 								</form>
 							)}
-							<div className="col s12">{`${this.props.comments.length} comments, so far !`}</div>
+							<Notice title={`${this.props.comments.length} comments, so far !`}/>
 						</div>
 						{this.renderComments()}
 					</div>

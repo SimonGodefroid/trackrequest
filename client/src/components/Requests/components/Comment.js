@@ -58,6 +58,7 @@ class Comment extends Component {
   render() {
     const showDeleteButton =
       this.props.comment.author._id === this.props.auth._id;
+      const showReplyButton = this.props.auth ? true : false;
     return (
       <div className="col s12 m8 offset-m0 l10 offset-l0">
         <div className="card-panel grey lighten-5 z-depth-1">
@@ -104,12 +105,12 @@ class Comment extends Component {
                   onClick={this.handleDeleteComment}
                 />
               )}
-              <input
+              {showReplyButton &&(<input
                 className="btn waves-effect waves-light right"
                 type="submit"
                 value="reply"
                 onClick={this.handleClick}
-              />
+              />)}
             </div>
           </div>
           {this.renderReplies(this.props)}
