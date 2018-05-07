@@ -105,8 +105,33 @@ class RequestForm extends Component {
 				<div className={'container white'} style={{ marginTop: '100px' }}>
 					<h3 className={`center`}>Create your request</h3>
 					<Suggestions suggestions={this.state.suggestions} />
-					<form onSubmit={this.props.handleSubmit(this.props.onRequestSubmit)} style={{ margin: '100px' }}>
+					<form onSubmit={this.props.handleSubmit(this.props.onRequestSubmit)} style={{ margin: '100px' }}>{/* Recipe Field */}
+					<div>
+					<p>I would love to hear a </p>
+						<label>Recipe</label>
+						<Field
+							name="recipeSelect"
+							component={(props) => (
+								<Select
+									{...props}
+									// multi
+									options={RECIPES}
+									placeholder="Select a recipe"
+									value={props.input.value}
+									onChange={props.input.onChange}
+									onBlur={() => {
+										props.input.onBlur(props.input.value);
+									}}
+								/>
+							)}
+						/>
+						<div className={`red-text`} style={{ marginBottom: '20px' }} />
+					</div>
+					{/* End of Recipe Field */}
+
+						{/* Source Track Field */}
 						<div>
+						<p>of the song</p>
 							<label>Source Track</label>
 							<Field
 								name="sourceTrackSelect"
@@ -126,7 +151,10 @@ class RequestForm extends Component {
 							/>
 							<div className={`red-text`} style={{ marginBottom: '20px' }} />
 						</div>
+						{/* End of Source Track Field */}
+						{/* Source Artist Field */}
 						<div>
+						<p>originally performed by</p>
 							<label>Source Artist</label>
 							<Field
 								name="sourceArtistSelect"
@@ -146,7 +174,10 @@ class RequestForm extends Component {
 							/>
 							<div className={`red-text`} style={{ marginBottom: '20px' }} />
 						</div>
+						{/* End of Source Artist Field */}
+						{/* Target Artist Field */}
 						<div>
+						<p>revisited by</p>
 							<label>Target Artist</label>
 							<Field
 								name="targetArtistSelect"
@@ -166,27 +197,10 @@ class RequestForm extends Component {
 							/>
 							<div className={`red-text`} style={{ marginBottom: '20px' }} />
 						</div>
-						<div>
-							<label>Recipe</label>
-							<Field
-								name="recipeSelect"
-								component={(props) => (
-									<Select
-										{...props}
-										// multi
-										options={RECIPES}
-										placeholder="Select a recipe"
-										value={props.input.value}
-										onChange={props.input.onChange}
-										onBlur={() => {
-											props.input.onBlur(props.input.value);
-										}}
-									/>
-								)}
-							/>
-							<div className={`red-text`} style={{ marginBottom: '20px' }} />
-						</div>
-						<div>
+						{/* End of Target Artist Field */}
+						{/* Flavour Field */}
+					<div>
+					<p>reworked à la </p>
 							<label>Flavour</label>
 							<Field
 								name="flavourSelect"
@@ -207,6 +221,7 @@ class RequestForm extends Component {
 							/>
 							<div className={`red-text`} style={{ marginBottom: '20px' }} />
 						</div>
+						{/* End of Flavour Field */}
 						{this.renderFields()}
 						<div style={{ paddingTop: '20px' }}>
 							<button className={`teal btn-flat right white-text`} type={`submit`}>
