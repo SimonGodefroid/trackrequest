@@ -7,56 +7,95 @@ import Comment from '../../components/Comment';
 import VoteButtons from '../../../Core/VoteButtons';
 import Notice from '../../../Core/Notice';
 import './request-details.css';
+import GuestNotice from '../../../Core/GuestNotice';
 
 class RequestDetails extends Component {
 	state = {
 		comment: '',
 	};
 
+
 	componentDidMount() {
+		/**
+		 * We fetch the current request when landing on the page
+		*/
 		this.props
 			.fetchCurrentRequest(this.props.match.params.id)
 			.then(() => this.props.getComments(this.props.match.params.id));
 	}
 
 	componentWillUnmount() {
+		/**
+		 * We clean the current request when unmounting the page
+		*/
 		this.props.clearCurrentRequest(this.props.match.params.id);
 	}
 
 	handleChange = (evt) => {
+		/**
+		 * This handler saves the state of the input for the comment form
+		 * The comment form renders below the current request block
+		*/
 		evt.preventDefault();
 		this.setState({ comment: evt.target.value });
 	};
 
 	handleSubmitComment = (evt) => {
+		/**
+		 * We use this handler to submit a new comment
+		*/
 		evt.preventDefault();
 		this.props
-			.postComment(this.props.auth._id, this.props.match.params.id, this.state.comment)
+			.postComment(
+				this.props.auth._id,
+				this.props.match.params.id,
+				this.state.comment
+			)
 			.then(() => this.props.getComments(this.props.match.params.id))
 			.then(() => this.setState({ comment: '' }));
 	};
 
 	handleDeleteComment = (commentId, requestId) => {
-		this.props.deleteComment(commentId, requestId).then(() => this.props.getComments(requestId));
+		/**
+		 * We use this handler to delete a comment
+		*/
+		this.props
+			.deleteComment(commentId, requestId)
+			.then(() => this.props.getComments(requestId));
 	};
 
 	handleUpvoteComment = (commentId, userId, requestId) => {
-		this.props.upvoteComment(commentId, userId).then(() => this.props.getComments(requestId));
+		/**
+		 * We use this handler to upvote a comment
+		*/
+		this.props
+			.upvoteComment(commentId, userId)
+			.then(() => this.props.getComments(requestId));
 	};
 
 	handleDownvoteComment = (commentId, userId, requestId) => {
-		this.props.downvoteComment(commentId, userId).then(() => this.props.getComments(requestId));
+		/**
+		 * We use this handler to downvote a comment
+		*/
+		this.props
+			.downvoteComment(commentId, userId)
+			.then(() => this.props.getComments(requestId));
 	};
 
 	handleDeleteRequest = () => {
-		this.props.deleteRequest(this.props.match.params.id, this.props.history);
-	};
-
-	handleSubmitReply = (userId, requestId, commentId, content) => {
-		this.props.postReply(userId, requestId, commentId, content).then(() => this.props.getComments(requestId));
+		/**
+		 * We use this handler to delete the request
+		*/
+		this.props.deleteRequest(
+			this.props.match.params.id,
+			this.props.history
+		);
 	};
 
 	renderComments() {
+		/**
+		 * We use this method to render the list of components
+		*/
 		if (this.props.comments && this.props.comments.length > 0) {
 			const commentList = this.props.comments.map((comment) => (
 				<Comment
@@ -76,12 +115,21 @@ class RequestDetails extends Component {
 	}
 
 	renderDeleteButton() {
+		/**
+		 * We use this method to render the delete request button
+		*/
 		const { currentRequest } = this.props;
 		const userId = this.props.auth._id;
-		const showDeleteButton = currentRequest && currentRequest.author ? currentRequest.author._id === userId : false;
+		const showDeleteButton =
+			currentRequest && currentRequest.author
+				? currentRequest.author._id === userId
+				: false;
 		if (showDeleteButton) {
 			return (
-				<a style={{}} onClick={this.handleDeleteRequest} className="btn-floating btn-large red right">
+				<a
+					style={{}}
+					onClick={this.handleDeleteRequest}
+					className="btn-floating btn-large red right">
 					<i className="large material-icons">delete</i>
 				</a>
 			);
@@ -91,7 +139,7 @@ class RequestDetails extends Component {
 
 	render() {
 		const { currentRequest, auth } = this.props;
-		const showForm = this.props.auth ? true : false;
+		const showCommentForm = this.props.auth ? true : false;
 		if (currentRequest && auth !== null) {
 			return (
 				<div className="row">
@@ -108,22 +156,43 @@ class RequestDetails extends Component {
 									{this.renderDeleteButton()}
 								</div>
 								<h4 className="center">
-									<a href={currentRequest.sourceArtistUrl} style={{ color: 'white' }} target="blank">
-										<span style={{ cursor: 'pointer' }}>{currentRequest.sourceArtist} </span>
+									<a
+										href={currentRequest.sourceArtistUrl}
+										style={{ color: 'white' }}
+										target="blank">
+										<span style={{ cursor: 'pointer' }}>
+											{currentRequest.sourceArtist}{' '}
+										</span>
 									</a>-
-									<a href={currentRequest.songUrl} style={{ color: 'white' }} target="blank">
-										<span> {currentRequest.sourceTrack}</span>
+									<a
+										href={currentRequest.songUrl}
+										style={{ color: 'white' }}
+										target="blank">
+										<span>
+											{' '}
+											{currentRequest.sourceTrack}
+										</span>
 									</a>
 								</h4>
 								<h4 className="center">
 									{currentRequest.recipe}ed by{' '}
-									<a href={currentRequest.targetArtistUrl} style={{ color: 'white' }} target="blank">
-										<span style={{ fontWeight: 'bold' }}>{currentRequest.targetArtist}</span>
+									<a
+										href={currentRequest.targetArtistUrl}
+										style={{ color: 'white' }}
+										target="blank">
+										<span style={{ fontWeight: 'bold' }}>
+											{currentRequest.targetArtist}
+										</span>
 									</a>{' '}
 									or anyone else
 								</h4>
 								<h4 className="center">
-									<div className="chip" style={{ color: 'black', backgroundColor: 'white' }}>
+									<div
+										className="chip"
+										style={{
+											color: 'black',
+											backgroundColor: 'white',
+										}}>
 										#{currentRequest.flavour}
 									</div>
 								</h4>
@@ -131,61 +200,79 @@ class RequestDetails extends Component {
 								<div className={'center'}>
 									<p>
 										<span>
-											<i className={'material-icons'}>audiotrack</i>
+											<i className={'material-icons'}>
+												audiotrack
+											</i>
 										</span>
 									</p>
-									{showForm && (
+									{showCommentForm && (
 										<VoteButtons
 											request={currentRequest}
 											user={this.props.auth}
 											fetchOption={'single'}
 										/>
 									)}
-									<p className={'center'} style={{ verticalAlign: 'middle' }}>
-										<span className={'valign-wrapper center'} style={{ display: 'inline-block' }}>
-											<i className={'material-icons'} style={{ verticalAlign: 'middle' }}>
-												arrow_upward
-											</i>: {currentRequest.upvotes}
-										</span>
-										<span style={{ padding: '0 10px' }}>|</span>
-										<span className={'valign-wrapper'} style={{ display: 'inline-block' }}>
-											<i className={'material-icons'} style={{ verticalAlign: 'middle' }}>
-												arrow_downward
-											</i>: {currentRequest.downvotes}
-										</span>
-									</p>
 								</div>
 								<div className="center">
 									<div>
 										<span className={`imageholder`}>
-											<a href={currentRequest.sourceArtistUrl || ''} target="blank">
+											<a
+												href={
+													currentRequest.sourceArtistUrl ||
+													'#'
+												}
+												target="blank">
 												<img
-													className={'circle responsive-img overlay image'}
+													className={
+														'circle responsive-img overlay image'
+													}
 													alt={''}
 													style={{
-														border: '4px solid white',
+														border:
+															'4px solid white',
 														margin: '1em 2em ',
 													}}
-													src={currentRequest.sourceArtistImage}
+													src={
+														currentRequest.sourceArtistImage ||
+														'/placeholder.png' || `http://via.placeholder.com/174x174/e8117f/ffffff?text=${currentRequest.sourceArtist}}`
+													}
 												/>
 												<div className={`middle`}>
-													<div className={`text`}>{currentRequest.sourceArtist}</div>
+													<div className={`text`}>
+														{
+															currentRequest.sourceArtist
+														}
+													</div>
 												</div>
 											</a>
 										</span>
 										<span className={`imageholder`}>
-											<a href={currentRequest.targetArtistUrl || ''} target="blank">
+											<a
+												href={
+													currentRequest.targetArtistUrl ||
+													'/placeholder.png'
+												}
+												target="blank">
 												<img
-													className={'circle responsive-img image'}
+													className={
+														'circle responsive-img image'
+													}
 													alt={''}
 													style={{
-														border: '4px solid white',
+														border:
+															'4px solid white',
 														margin: '1em 2em ',
 													}}
-													src={currentRequest.targetArtistImage}
+													src={
+														currentRequest.targetArtistImage || '/placeholder.png' || `http://via.placeholder.com/174x174/e8117f/ffffff?text=${currentRequest.targetArtist}}`
+													}
 												/>
 												<div className={`middle`}>
-													<div className={`text`}>{currentRequest.targetArtist}</div>
+													<div className={`text`}>
+														{
+															currentRequest.targetArtist
+														}
+													</div>
 												</div>
 											</a>
 										</span>
@@ -194,34 +281,70 @@ class RequestDetails extends Component {
 								<div className="card-content">
 									<span className="card-title center">{`"${currentRequest.message}"`}</span>
 									<span className="card-title center">
-										submitted by {get(currentRequest, 'author.username', '')}, on{' '}
+										submitted by{' '}
+										{get(
+											currentRequest,
+											'author.username',
+											''
+										)}, on{' '}
 										{currentRequest &&
 											currentRequest.createdAt &&
-											new Date(currentRequest.createdAt).toLocaleDateString('fr-FR')}.
+											new Date(
+												currentRequest.createdAt
+											).toLocaleDateString('fr-FR')}.
 									</span>
+									<p
+										className={'center'}
+										style={{ verticalAlign: 'middle' }}>
+										<span
+											className={'valign-wrapper center'}
+											style={{ display: 'inline-block' }}>
+											<i
+												className={'material-icons'}
+												style={{
+													verticalAlign: 'middle',
+												}}>
+												arrow_upward
+											</i>: {currentRequest.upvotes}
+										</span>
+										<span style={{ padding: '0 10px' }}>
+											|
+										</span>
+										<span
+											className={'valign-wrapper'}
+											style={{ display: 'inline-block' }}>
+											<i
+												className={'material-icons'}
+												style={{
+													verticalAlign: 'middle',
+												}}>
+												arrow_downward
+											</i>: {currentRequest.downvotes}
+										</span>
+									</p>
 								</div>
 							</div>
 						</div>
 						<div className="row">
-							{!showForm && (
-								<Notice
-									title={'Browsing as guest'}
-									content={
-										'You are currently browsing as guest' +
-										" so you won't be able to vote for requests, comment, vote for comments, reply or vote for replies"
-									}
-								/>
-							)}
-							{showForm && (
-								<form className="col s12" onSubmit={this.handleSubmitComment}>
+							{!showCommentForm && (<GuestNotice/>
+								)}
+							{showCommentForm && (
+								<form
+									className="col s12"
+									onSubmit={this.handleSubmitComment}>
 									<div className="row">
 										<div className="input-field col s10">
-											<i className="material-icons prefix">account_circle</i>
+											<i className="material-icons prefix">
+												account_circle
+											</i>
 											<textarea
 												id="icon_prefix"
 												rows={'10'}
 												type="text"
-												style={{ border: '2px black solid', borderRadius: '5px' }}
+												style={{
+													border: '2px black solid',
+													borderRadius: '5px',
+												}}
 												placeholder="Your comment, be nice..."
 												value={this.state.comment}
 												onChange={this.handleChange}
@@ -230,7 +353,10 @@ class RequestDetails extends Component {
 										</div>
 										<div className="input-field col s12 m2 l2 center">
 											<Button
-												disabled={this.state.comment.length === 0}
+												disabled={
+													this.state.comment
+														.length === 0
+												}
 												variant="raised"
 												color="primary"
 												type="submit">
@@ -240,7 +366,10 @@ class RequestDetails extends Component {
 									</div>
 								</form>
 							)}
-							<Notice title={`${this.props.comments.length} comments, so far !`}/>
+							<Notice
+								title={`${this.props.comments
+									.length} comments, so far !`}
+							/>
 						</div>
 						{this.renderComments()}
 					</div>

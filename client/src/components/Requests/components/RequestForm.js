@@ -268,6 +268,7 @@ const validate = (values) => {
 const selector = formValueSelector('requestForm'); // <-- same as form name
 RequestForm = connect((state) => ({
 	sourceTrack: selector(state, 'sourceTrackSelect'),
+	sourceArtist: selector(state, 'sourceArtistSelect'),
 }))(RequestForm);
 
 // handleSubmit comes from requestForm

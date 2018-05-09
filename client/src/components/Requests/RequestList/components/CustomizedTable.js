@@ -14,8 +14,6 @@ const CustomTableCell = withStyles(theme => ({
   head: {
     backgroundColor: theme.palette.common.black,
     color: theme.palette.common.white,
-    top: 0,
-    position: "sticky",
   },
   body: {
     fontSize: 14,
@@ -41,8 +39,6 @@ const styles = theme => ({
 
 const CustomizedTable = props => {
   const { classes, requests, auth } = props;
-  console.log('custo table props',props)
-
   const handleCellClick = (id, props) => {
     props.history.push(`/request/${id}`);
   };
