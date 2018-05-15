@@ -53,6 +53,7 @@ passport.use(
       if (existingUser) {
         return done(null, existingUser);
       }
+      console.log('USER FROM GMAIL', profile)
       const user = await new User({ googleId: profile.id, username: profile.displayName, avatar: profile.photos[0].value}).save();
       done(null, user);
     },

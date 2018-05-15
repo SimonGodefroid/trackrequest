@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import Reply from './Reply';
+import RepliesList from './RepliesList';
 import ReplyForm from './ReplyForm';
 import CommentCard from './CommentCard';
 class Comment extends Component {
@@ -46,16 +46,6 @@ class Comment extends Component {
 		);
 	};
 
-	renderReplies = (props) => {
-		if (props.comment.replies) {
-			const replies = props.comment.replies.map((rep, index) => (
-				<Reply key={index} {...rep} />
-			));
-			return replies;
-		}
-		return null;
-	};
-
 	render() {
 
 		return (
@@ -73,7 +63,7 @@ class Comment extends Component {
 						handleClickReplyButtonFn={this.handleClickReplyButton}
 					/>
 				)}
-				{this.renderReplies(this.props)}
+				<RepliesList replies={this.props.comment.replies}/>
 			</div>
 		);
 	}

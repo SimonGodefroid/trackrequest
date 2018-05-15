@@ -4,7 +4,7 @@ import each from 'lodash/each';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { reduxForm, Field, formValueSelector } from 'redux-form';
-import { Async } from 'react-select';
+import { Async, AsyncCreatable } from 'react-select';
 import Select from 'react-select';
 import { Link } from 'react-router-dom';
 import { PulseLoader } from 'halogenium';
@@ -55,6 +55,7 @@ class RequestForm extends Component {
 				const results = json.results.trackmatches.track.map((res) => ({
 					value: res.name,
 					label: `${res.name} by ${res.artist}`,
+					artist: res.artist,
 					songUrl: res.url,
 				}));
 				return { options: results };
@@ -80,7 +81,7 @@ class RequestForm extends Component {
 					url: res.url,
 					images: res.image,
 				}));
-				return { options: results };
+				return { options: [...results,{value:'Any artist !', label:'Any artist !', url:'#', images: ''}] };
 			});
 	};
 
@@ -137,10 +138,11 @@ class RequestForm extends Component {
 								name="sourceTrackSelect"
 								placeholder="Search for the source track"
 								component={(props) => (
-									<Async
+									<AsyncCreatable
+										creatable={true}
 										loadOptions={this.getOptionsTracks}
 										value={props.input.value}
-										onChange={props.input.onChange}
+										onChange={value=>props.input.onChange(value)}
 										onBlurResetsInput={false}
 										{...props}
 										onBlur={() => {
@@ -160,12 +162,13 @@ class RequestForm extends Component {
 								name="sourceArtistSelect"
 								placeholder="Search for the source artist"
 								component={(props) => (
-									<Async
+									<AsyncCreatable
+										creatable={true}
 										onValueClick={this.gotoArtist}
 										loadOptions={this.getOptionsArtists}
-										value={props.input.value}
 										onChange={props.input.onChange}
 										{...props}
+										value={props.input.value}
 										onBlur={() => {
 											props.input.onBlur(props.input.value);
 										}}
@@ -183,8 +186,9 @@ class RequestForm extends Component {
 								name="targetArtistSelect"
 								placeholder="Search a target artist"
 								component={(props) => (
-									<Async
+									<AsyncCreatable
 										{...props}
+										creatable={true}
 										onValueClick={this.gotoArtist}
 										loadOptions={this.getOptionsArtists}
 										value={props.input.value}
@@ -209,7 +213,7 @@ class RequestForm extends Component {
 										{...props}
 										// multi
 										creatable={true}
-										options={FLAVOURS}
+										options={[...FLAVOURS,"Any style"]}
 										placeholder="Select a flavour"
 										value={props.input.value}
 										onChange={props.input.onChange}
@@ -268,7 +272,7 @@ const validate = (values) => {
 const selector = formValueSelector('requestForm'); // <-- same as form name
 RequestForm = connect((state) => ({
 	sourceTrack: selector(state, 'sourceTrackSelect'),
-	sourceArtist: selector(state, 'sourceArtistSelect'),
+	sourceArtist: selector(state, 'sourceTrackSelect'),
 }))(RequestForm);
 
 // handleSubmit comes from requestForm
