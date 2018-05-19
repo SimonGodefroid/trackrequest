@@ -52,8 +52,8 @@ const CommentCard = (props) => {
 							style={{ color: 'black' }}>
 							<i
 								className="material-icons"
-								onClick={this.handleUpvote}>
-								arrow_upward
+								onClick={props.handleUpvote}>
+								thumb_up
 							</i>
 						</a>
 						<br />
@@ -69,8 +69,8 @@ const CommentCard = (props) => {
 							style={{ color: 'black', display: 'inline-block' }}>
 							<i
 								className="material-icons"
-								onClick={this.handleDownvote}>
-								arrow_downward
+								onClick={props.handleDownvote}>
+								thumb_down
 							</i>
 						</a>
 					</div>

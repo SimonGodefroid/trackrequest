@@ -18,9 +18,9 @@ class ReplyForm extends Component {
 	};
 
 	handleSubmitReply = (e) => {
-		e.preventDefault();
+		// e.preventDefault();
 		this.setState({ reply: '' });
-		this.props.toggleFormVisibility();
+		this.props.toggleFormVisibility(e);
 		const { comment, auth, currentRequest } = this.props;
 		this.props
 			.postReply(
@@ -31,6 +31,7 @@ class ReplyForm extends Component {
 			)
 			.then(() => this.props.getComments(currentRequest._id));
 	};
+
 
 	render() {
 		return (

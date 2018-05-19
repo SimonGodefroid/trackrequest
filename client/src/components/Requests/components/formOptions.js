@@ -8,6 +8,7 @@ export const RECIPES = [
 
 // https://gist.github.com/sampsyo
 export const FLAVOURS = [
+{'label':'Any style !','value':'Any style !'},
 {'label':'2 tone','value':'2 tone'},
 {'label':'2-step garage','value':'2-step garage'},
 {'label':'4-beat','value':'4-beat'},

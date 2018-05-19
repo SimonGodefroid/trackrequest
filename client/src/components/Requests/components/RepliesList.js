@@ -7,9 +7,16 @@ import ReplyCard from './ReplyCard';
 class RepliesList extends Component {
 	render() {
 		if (this.props.replies.length) {
-			return this.props.replies.map((reply) => (
-				<ReplyCard key={reply._id} reply={reply} />
+			return this.props.replies.map((reply, index) => (
+				<ReplyCard
+					{...this.props}
+					key={`${reply._id} ${index}`}
+					reply={reply}
+					comment={this.props.comment}
+				/>
 			));
+		} else {
+			return null;
 		}
 	}
 }

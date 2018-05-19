@@ -9,94 +9,127 @@ import moment from 'moment';
 import ReplyForm from './ReplyForm';
 
 class ReplyCard extends Component {
-  state = {
-    showFormReply: false,
-  }
-  handleClick = (evt) =>{
-    evt.preventDefault();
-    this.setState({showFormReply:!this.state.showFormReply});
-  }
+	state = {
+		showFormReply: false,
+	};
+	handleClick = (evt) => {
+		evt.preventDefault();
+		this.setState({ showFormReply: !this.state.showFormReply });
+	};
+
+	handleDeleteReply = (e) => {
+		e.preventDefault();
+		const { reply, auth, requestId } = this.props;
+		this.props
+			.deleteReply(auth._id, requestId, reply._id)
+			.then(() => this.props.getComments(requestId));
+	};
+
 	render() {
 		if (Object.keys(this.props.reply).length) {
 			return (
-        <div>
-				<Card
-					key={this.props.reply._id}
-					style={{ backgroundColor: 'pink' }}
-					className="col s10 m10 l10">
-					<CardHeader
-						title={moment(this.props.reply.createdAt).format(
-							'DD/MM/YYYY-hh:mm:ss'
-						)}
-						avatar={
-							<CustomizedChip
-								user={this.props.reply.reply_author}
-							/>
-						}
-					/>
-					<CardContent>
-						<div
-							style={{
-								// consider removing
-								display: 'inline-block',
-							}}>
-							<div style={{ float: 'left' }}>
-								<span style={{ color: 'green' }}>
-									{
-										Object.keys(
-											get(this.props.reply, 'votes.upvotes', {})
-										).length
-									}
-								</span>
-								<a
-									className="waves-effect waves-teal btn-flat"
-									style={{ color: 'black' }}>
-									<i className="material-icons">
-										arrow_upward
-									</i>
-								</a>
-								<br />
-								<span style={{ color: 'red' }}>
-									{
-										Object.keys(
-											get(this.props.rep, 'votes.downvotes', {})
-										).length
-									}
-								</span>
-								<a
-									className="waves-effect waves-teal btn-flat"
-									style={{
-										color: 'black',
-										display: 'inline-block',
-									}}>
-									<i className="material-icons">
-										arrow_downward
-									</i>
-								</a>
+				<div key={this.props.reply._id}>
+					<Card
+						style={{ backgroundColor: 'pink' }}
+						className="col s10 m10 l10">
+						<CardHeader
+							title={moment(this.props.reply.createdAt).format(
+								'DD/MM/YYYY-hh:mm:ss'
+							)}
+							avatar={
+								<CustomizedChip
+									user={this.props.reply.reply_author}
+								/>
+							}
+						/>
+						<CardContent>
+							<div
+								style={{
+									// consider removing
+									display: 'inline-block',
+								}}>
+								<div style={{ float: 'left' }}>
+									<span style={{ color: 'green' }}>
+										{
+											Object.keys(
+												get(
+													this.props.reply,
+													'votes.upvotes',
+													{}
+												)
+											).length
+										}
+									</span>
+									<a
+										className="waves-effect waves-teal btn-flat"
+										style={{ color: 'black' }}
+										onClick={()=>{console.log('upvote')}}
+										>
+										<i className="material-icons">
+											thumb_up
+										</i>
+									</a>
+									<br />
+									<span style={{ color: 'red' }}>
+										{
+											Object.keys(
+												get(
+													this.props.rep,
+													'votes.downvotes',
+													{}
+												)
+											).length
+										}
+									</span>
+									<a
+										className="waves-effect waves-teal btn-flat"
+										style={{
+											color: 'black',
+											display: 'inline-block',
+										}}
+										onClick={()=>{console.log('downvote')}}
+										>
+										<i className="material-icons">
+										thumb_down
+										</i>
+									</a>
+								</div>
+								<div style={{ float: 'left' }}>
+									<p>{this.props.reply.content}</p>
+								</div>
 							</div>
-							<div style={{ float: 'left' }}>
-								<p>{this.props.reply.content}</p>
-							</div>
+						</CardContent>
+						<CardActions style={{ float: 'right' }}>
+							{/*showReplyButton && (*/}
+							<Button
+								size="small"
+								color="primary"
+								onClick={this.handleClick}>
+								Reply
+							</Button>
+							{/*)}*/}
+							{/*showDeleteButton && (*/}
+							<Button
+								size="small"
+								color="secondary"
+								onClick={this.handleDeleteReply}>
+								Delete
+							</Button>
+							{/*)}*/}
+						</CardActions>
+						<div>
+							{this.state.showFormReply && (
+								<ReplyForm
+									comment={this.props.comment}
+									toggleFormVisibility={this.handleClick}
+								/>
+							)}
 						</div>
-					</CardContent>
-					<CardActions style={{ float: 'right' }}>
-						{/*showReplyButton && (*/}
-						<Button size="small" color="primary" onClick={this.handleClick}>
-							Reply
-						</Button>
-						{/*)}*/}
-						{/*showDeleteButton && (*/}
-						<Button size="small" color="secondary">
-							Delete
-						</Button>
-						{/*)}*/}
-					</CardActions>
-          <p>
-          {this.state.showFormReply && (<ReplyForm />)}
-          </p>
-        </Card>
-        </div>
+					</Card>
+				</div>
 			);
+		} else {
+			return null;
 		}
 	}
 }

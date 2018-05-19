@@ -127,3 +127,14 @@ export const postReply = (
   );
   dispatch({ type: POST_REPLY, payload: res.data });
 };
+
+export const deleteReply = (
+  userId,
+  requestId,
+  replyId,
+) => async dispatch => {
+  const res = await axios.delete(
+    `/api/replies/${replyId}/request/${requestId}`,
+  );
+  dispatch({ type: POST_REPLY, payload: res.data });
+};

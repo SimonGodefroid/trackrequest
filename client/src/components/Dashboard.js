@@ -17,6 +17,15 @@ const Dashboard = (props) => {
 					}
 				/>
 			)}
+			{showButton && (
+				<Notice
+					title={'Requests List'}
+					content={
+						'You are currently viewing all the requests.' +
+						' From here you can browse and upvote existing ones or create a new one'
+					}
+				/>
+			)}
 			<RequestList />
 			{showButton && (
 				<div className="fixed-action-btn">

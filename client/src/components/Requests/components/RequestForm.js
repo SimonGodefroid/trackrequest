@@ -9,6 +9,7 @@ import Select from 'react-select';
 import { Link } from 'react-router-dom';
 import { PulseLoader } from 'halogenium';
 
+import Paper from 'material-ui/Paper';
 import RequestField from './RequestField';
 import formFields from './formFields';
 import { RECIPES, FLAVOURS } from './formOptions';
@@ -24,8 +25,8 @@ class RequestForm extends Component {
 	 * Fetch of the top charts for suggestions
 	 */
 		return fetch(
-			`http://ws.audioscrobbler.com/2.0/?method=chart.gettoptracks&api_key=${process.env
-				.REACT_APP_LAST_KEY}&format=json`
+			`http://ws.audioscrobbler.com/2.0/?method=chart.gettoptracks&api_key=${process
+				.env.REACT_APP_LAST_KEY}&format=json`
 		)
 			.then((response) => response.json())
 			.then((json) => {
@@ -48,7 +49,8 @@ class RequestForm extends Component {
 			return Promise.resolve({ options: [] });
 		}
 		return fetch(
-			`http://ws.audioscrobbler.com/2.0/?method=track.search&track=${input}&api_key=644459a6b109d6d8d8320b2596eddb8b&format=json`
+			`http://ws.audioscrobbler.com/2.0/?method=track.search&track=${input}&api_key=${process
+				.env.REACT_APP_LAST_KEY}&format=json`
 		)
 			.then((response) => response.json())
 			.then((json) => {
@@ -57,6 +59,7 @@ class RequestForm extends Component {
 					label: `${res.name} by ${res.artist}`,
 					artist: res.artist,
 					songUrl: res.url,
+					images: res.image,
 				}));
 				return { options: results };
 			});
@@ -70,18 +73,30 @@ class RequestForm extends Component {
 			return Promise.resolve({ options: [] });
 		}
 		return fetch(
-			`http://ws.audioscrobbler.com/2.0/?method=artist.search&artist=${input}&api_key=${process.env
-				.REACT_APP_LAST_KEY}&format=json`
+			`http://ws.audioscrobbler.com/2.0/?method=artist.search&artist=${input}&api_key=${process
+				.env.REACT_APP_LAST_KEY}&format=json`
 		)
 			.then((response) => response.json())
 			.then((json) => {
-				const results = json.results.artistmatches.artist.map((res) => ({
-					value: res.name,
-					label: res.name,
-					url: res.url,
-					images: res.image,
-				}));
-				return { options: [...results,{value:'Any artist !', label:'Any artist !', url:'#', images: ''}] };
+				const results = json.results.artistmatches.artist.map(
+					(res) => ({
+						value: res.name,
+						label: res.name,
+						url: res.url,
+						images: res.image,
+					})
+				);
+				return {
+					options: [
+						...results,
+						{
+							value: 'Any artist !',
+							label: 'Any artist !',
+							url: '#',
+							images: '',
+						},
+					],
+				};
 			});
 	};
 
@@ -89,12 +104,20 @@ class RequestForm extends Component {
 	 * Method to render the form fields that are not react-select fields
 	 */
 	renderFields = () =>
-		map(formFields.filter((field) => field.select === false), ({ label, name }) => (
-			<Field key={name} component={RequestField} type={`text`} label={label} name={name} />
-		));
+		map(
+			formFields.filter((field) => field.select === false),
+			({ label, name }) => (
+				<Field
+					key={name}
+					component={RequestField}
+					type={`text`}
+					label={label}
+					name={name}
+				/>
+			)
+		);
 
 	render() {
-		console.log('this.formFields', this.props);
 		if (!this.state.suggestions.length) {
 			return (
 				<div className={'center'}>
@@ -103,37 +126,60 @@ class RequestForm extends Component {
 			);
 		} else {
 			return (
-				<div className={'container white'} style={{ marginTop: '100px' }}>
+				<div
+					className={'container white'}
+					style={{ marginTop: '100px' }}>
 					<h3 className={`center`}>Create your request</h3>
 					<Suggestions suggestions={this.state.suggestions} />
-					<form onSubmit={this.props.handleSubmit(this.props.onRequestSubmit)} style={{ margin: '100px' }}>{/* Recipe Field */}
-					<div>
-					<p>I would love to hear a </p>
-						<label>Recipe</label>
-						<Field
-							name="recipeSelect"
-							component={(props) => (
-								<Select
-									{...props}
-									// multi
-									options={RECIPES}
-									placeholder="Select a recipe"
-									value={props.input.value}
-									onChange={props.input.onChange}
-									onBlur={() => {
-										props.input.onBlur(props.input.value);
-									}}
-								/>
-							)}
-						/>
-						<div className={`red-text`} style={{ marginBottom: '20px' }} />
-					</div>
-					{/* End of Recipe Field */}
+					<form
+						onSubmit={this.props.handleSubmit(
+							this.props.onRequestSubmit
+						)}
+						style={{ margin: '100px' }}>
+						{/* Recipe Field */}
+						<div>
+							<h5>
+								I would love to hear a{' '}
+								<span color="primary">{`${this.props.recipe ||
+									''}`}</span>
+							</h5>
+
+							<Field
+								name="recipeSelect"
+								component={(props) => (
+									<Select
+										{...props}
+										// multi
+										options={RECIPES}
+										placeholder="Select a recipe"
+										value={props.input.value}
+										onChange={props.input.onChange}
+										onBlur={() => {
+											props.input.onBlur(
+												props.input.value
+											);
+										}}
+									/>
+								)}
+							/>
+							<label>
+								The <em>Recipe</em> is the type of version you
+								expect, Cover, Remix, Mashup...
+							</label>
+							<div
+								className={`red-text`}
+								style={{ marginBottom: '20px' }}
+							/>
+						</div>
+						{/* End of Recipe Field */}
 
 						{/* Source Track Field */}
 						<div>
-						<p>of the song</p>
-							<label>Source Track</label>
+							<h5>
+								of the song{' '}
+								<span>{`${this.props.sourceTrack ||
+									''}`}</span>
+							</h5>
 							<Field
 								name="sourceTrackSelect"
 								placeholder="Search for the source track"
@@ -142,22 +188,54 @@ class RequestForm extends Component {
 										creatable={true}
 										loadOptions={this.getOptionsTracks}
 										value={props.input.value}
-										onChange={value=>props.input.onChange(value)}
+										onChange={(value) => {
+											if (value && value.songUrl) {
+												const url = value.songUrl.substring(
+													0,
+													value.songUrl.search('/_/')
+												);
+												this.props.change(
+													'sourceArtistSelect',
+													{
+														value:
+															value.artist || '',
+														label:
+															value.artist || '',
+														url: url,
+														images:
+															value.images || [],
+													}
+												);
+											}
+											props.input.onChange(value);
+										}}
 										onBlurResetsInput={false}
 										{...props}
 										onBlur={() => {
-											props.input.onBlur(props.input.value);
+											props.input.onBlur(
+												props.input.value
+											);
 										}}
 									/>
 								)}
 							/>
-							<div className={`red-text`} style={{ marginBottom: '20px' }} />
+							<label>
+								The <em>Source Track</em> is the original track
+								you want to be reworked
+							</label>
+							<div
+								className={`red-text`}
+								style={{ marginBottom: '20px' }}
+							/>
 						</div>
 						{/* End of Source Track Field */}
 						{/* Source Artist Field */}
 						<div>
-						<p>originally performed by</p>
-							<label>Source Artist</label>
+							<h5>
+								originally performed by{' '}
+								<span style={{ color: 'green' }}>{`${this.props
+									.sourceArtist || ''}`}</span>
+							</h5>
 							<Field
 								name="sourceArtistSelect"
 								placeholder="Search for the source artist"
@@ -170,18 +248,29 @@ class RequestForm extends Component {
 										{...props}
 										value={props.input.value}
 										onBlur={() => {
-											props.input.onBlur(props.input.value);
+											props.input.onBlur(
+												props.input.value
+											);
 										}}
 									/>
 								)}
 							/>
-							<div className={`red-text`} style={{ marginBottom: '20px' }} />
+							<label>
+								The <em>Source Artist</em> is the artist who
+								originally performed the source track, fill this
+								field if we don't have the artist in the
+								database
+							</label>
+							<div
+								className={`red-text`}
+								style={{ marginBottom: '20px' }}
+							/>
 						</div>
 						{/* End of Source Artist Field */}
 						{/* Target Artist Field */}
 						<div>
-						<p>revisited by</p>
-							<label>Target Artist</label>
+							<h5>revisited by <span>{`${this.props.targetArtist || ''}`}</span></h5>
+
 							<Field
 								name="targetArtistSelect"
 								placeholder="Search a target artist"
@@ -194,18 +283,29 @@ class RequestForm extends Component {
 										value={props.input.value}
 										onChange={props.input.onChange}
 										onBlur={() => {
-											props.input.onBlur(props.input.value);
+											props.input.onBlur(
+												props.input.value
+											);
 										}}
 									/>
 								)}
 							/>
-							<div className={`red-text`} style={{ marginBottom: '20px' }} />
+							<label>
+								The <em>Target Artist</em> is the artist you
+								would like to perform the rework, create an
+								option if we don't have the artist (yet) in the
+								database
+							</label>
+							<div
+								className={`red-text`}
+								style={{ marginBottom: '20px' }}
+							/>
 						</div>
 						{/* End of Target Artist Field */}
 						{/* Flavour Field */}
-					<div>
-					<p>reworked à la </p>
-							<label>Flavour</label>
+						<div>
+							<h5>reworked in a <span>{`${((this.props.flavour || '<insert here>') + ' vibe' )|| ''}`}</span></h5>
+
 							<Field
 								name="flavourSelect"
 								component={(props) => (
@@ -213,22 +313,33 @@ class RequestForm extends Component {
 										{...props}
 										// multi
 										creatable={true}
-										options={[...FLAVOURS,"Any style"]}
+										options={FLAVOURS}
 										placeholder="Select a flavour"
 										value={props.input.value}
 										onChange={props.input.onChange}
 										onBlur={() => {
-											props.input.onBlur(props.input.value);
+											props.input.onBlur(
+												props.input.value
+											);
 										}}
 									/>
 								)}
 							/>
-							<div className={`red-text`} style={{ marginBottom: '20px' }} />
+							<label>
+								The <em>Flavour</em> is the style in which you
+								would love the target song to be reworked
+							</label>
+							<div
+								className={`red-text`}
+								style={{ marginBottom: '20px' }}
+							/>
 						</div>
 						{/* End of Flavour Field */}
 						{this.renderFields()}
 						<div style={{ paddingTop: '20px' }}>
-							<button className={`teal btn-flat right white-text`} type={`submit`}>
+							<button
+								className={`teal btn-flat right white-text`}
+								type={`submit`}>
 								Next
 								<i className={`material-icons right`}>done</i>
 							</button>
@@ -257,12 +368,10 @@ const validate = (values) => {
 	const errors = {};
 	// errors.recipients = validateEmails(values.recipients || '');
 	each(formFields, ({ name }) => {
-		console.log(name, values[name]);
 		if (!values[name]) {
-			errors[name] = `You must provide ${name}!`;
+			errors[name] = `You must provide a ${name}!`;
 		}
 	});
-	console.log('errors', errors);
 	return errors;
 };
 
@@ -271,8 +380,11 @@ const validate = (values) => {
 	 */
 const selector = formValueSelector('requestForm'); // <-- same as form name
 RequestForm = connect((state) => ({
-	sourceTrack: selector(state, 'sourceTrackSelect'),
-	sourceArtist: selector(state, 'sourceTrackSelect'),
+	recipe: selector(state, 'recipeSelect.value'),
+	sourceTrack: selector(state, 'sourceTrackSelect.value'),
+	sourceArtist: selector(state, 'sourceArtistSelect.value'),
+	targetArtist: selector(state, 'targetArtistSelect.value'),
+	flavour: selector(state, 'flavourSelect.value'),
 }))(RequestForm);
 
 // handleSubmit comes from requestForm

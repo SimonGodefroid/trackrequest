@@ -10,9 +10,9 @@ class Comment extends Component {
 		this.setState({ showReplyForm: !this.state.showReplyForm });
 	};
 
-	toggleFormVisibility = () =>{
+	toggleFormVisibility = () => {
 		this.setState({ showReplyForm: !this.state.showReplyForm });
-	}
+	};
 
 	handleUpvote = () =>
 		this.props.handleUpvoteCommentFn(
@@ -21,12 +21,13 @@ class Comment extends Component {
 			this.props.requestId
 		);
 
-	handleDownvote = () =>
+	handleDownvote = () => {
 		this.props.handleDownvoteCommentFn(
 			this.props.comment._id,
 			this.props.auth._id,
 			this.props.requestId
 		);
+	};
 
 	handleSubmitReply = (evt) => {
 		this.handleClick(evt);
@@ -47,23 +48,31 @@ class Comment extends Component {
 	};
 
 	render() {
-
 		return (
-			<div className="col s12 m8 offset-m0 l10 offset-l0">
+			<div
+				className="col s12 m8 offset-m0 l10 offset-l0"
+				key={this.props.comment._id}>
 				<CommentCard
 					{...this.props}
 					handleDeleteComment={this.handleDeleteComment}
 					handleClickReplyButtonFn={this.handleClickReplyButton}
+					handleUpvote={this.handleUpvote}
+					handleDownvote={this.handleDownvote}
 				/>
 				{this.state.showReplyForm && (
 					<ReplyForm
+						{...this.props}
 						comment={this.props.comment}
 						handleClickFn={this.handleClick}
 						toggleFormVisibility={this.toggleFormVisibility}
 						handleClickReplyButtonFn={this.handleClickReplyButton}
 					/>
 				)}
-				<RepliesList replies={this.props.comment.replies}/>
+				<RepliesList
+					{...this.props}
+					key={this.props.comment._id}
+					replies={this.props.comment.replies}
+				/>
 			</div>
 		);
 	}

@@ -7,14 +7,16 @@ export const sanitizeFormValues = (formValues) => {
 		? formValues.sourceArtistSelect.images.filter(
 				(image) => image.size === 'large'
 			)[0]['#text']
-		: '';
+		: `http://via.placeholder.com/174x174/e8117f/ffffff?text=${formValues
+				.sourceArtistSelect.value}`;
 	const cleanTargetArtistImage = Array.isArray(
 		formValues.targetArtistSelect.images
 	)
 		? formValues.targetArtistSelect.images.filter(
 				(image) => image.size === 'large'
 			)[0]['#text']
-		: '';
+		: `http://via.placeholder.com/174x174/e8117f/ffffff?text=${formValues
+				.targetArtistSelect.value}`;
 	const sourceArtistUrl = formValues.sourceArtistSelect.url;
 	const targetArtistUrl = formValues.targetArtistSelect.url;
 	const cleanValues = { ...formValues };

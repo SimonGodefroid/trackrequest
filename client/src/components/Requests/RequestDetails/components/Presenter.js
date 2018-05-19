@@ -14,7 +14,6 @@ class RequestDetails extends Component {
 		comment: '',
 	};
 
-
 	componentDidMount() {
 		/**
 		 * We fetch the current request when landing on the page
@@ -97,11 +96,12 @@ class RequestDetails extends Component {
 		 * We use this method to render the list of components
 		*/
 		if (this.props.comments && this.props.comments.length > 0) {
-			const commentList = this.props.comments.map((comment) => (
+			const commentList = this.props.comments.map(comment => (
 				<Comment
+					{...this.props}
+					key={comment._id}
 					user={comment.author}
 					auth={this.props.auth}
-					key={comment._id}
 					comment={comment}
 					requestId={this.props.match.params.id}
 					handleDeleteCommentFn={this.handleDeleteComment}
@@ -157,15 +157,15 @@ class RequestDetails extends Component {
 								</div>
 								<h4 className="center">
 									<a
-										href={currentRequest.sourceArtistUrl}
+										href={currentRequest.sourceArtistUrl||`http://www.google.com/search?q=${currentRequest.sourceArtist}+artist`}
 										style={{ color: 'white' }}
 										target="blank">
-										<span style={{ cursor: 'pointer' }}>
+										<span>
 											{currentRequest.sourceArtist}{' '}
 										</span>
 									</a>-
 									<a
-										href={currentRequest.songUrl}
+										href={currentRequest.songUrl||`http://www.google.com/search?q=${currentRequest.sourceTrack}+song`}
 										style={{ color: 'white' }}
 										target="blank">
 										<span>
@@ -177,7 +177,7 @@ class RequestDetails extends Component {
 								<h4 className="center">
 									{currentRequest.recipe}ed by{' '}
 									<a
-										href={currentRequest.targetArtistUrl}
+										href={currentRequest.targetArtistUrl||`http://www.google.com/search?q=${currentRequest.targetArtist}+artist`}
 										style={{ color: 'white' }}
 										target="blank">
 										<span style={{ fontWeight: 'bold' }}>
@@ -234,7 +234,8 @@ class RequestDetails extends Component {
 													}}
 													src={
 														currentRequest.sourceArtistImage ||
-														'/placeholder.png' || `http://via.placeholder.com/174x174/e8117f/ffffff?text=${currentRequest.sourceArtist}}`
+														'/placeholder.png' ||
+														`http://via.placeholder.com/174x174/e8117f/ffffff?text=${currentRequest.sourceArtist}}`
 													}
 												/>
 												<div className={`middle`}>
@@ -250,7 +251,7 @@ class RequestDetails extends Component {
 											<a
 												href={
 													currentRequest.targetArtistUrl ||
-													'/placeholder.png'
+													'#'
 												}
 												target="blank">
 												<img
@@ -264,7 +265,9 @@ class RequestDetails extends Component {
 														margin: '1em 2em ',
 													}}
 													src={
-														currentRequest.targetArtistImage || '/placeholder.png' || `http://via.placeholder.com/174x174/e8117f/ffffff?text=${currentRequest.targetArtist}}`
+														currentRequest.targetArtistImage ||
+														'/placeholder.png' ||
+														`http://via.placeholder.com/174x174/e8117f/ffffff?text=${currentRequest.targetArtist}}`
 													}
 												/>
 												<div className={`middle`}>
@@ -303,6 +306,7 @@ class RequestDetails extends Component {
 												className={'material-icons'}
 												style={{
 													verticalAlign: 'middle',
+													color:'#3f51b5'
 												}}>
 												arrow_upward
 											</i>: {currentRequest.upvotes}
@@ -317,6 +321,7 @@ class RequestDetails extends Component {
 												className={'material-icons'}
 												style={{
 													verticalAlign: 'middle',
+													color:'#f50057'
 												}}>
 												arrow_downward
 											</i>: {currentRequest.downvotes}
@@ -325,9 +330,12 @@ class RequestDetails extends Component {
 								</div>
 							</div>
 						</div>
+						<div>
+							{showCommentForm && <Notice title={'Request Details'} content={'Here, the community will post the comments and the artists will post their link to the version of the song, a Youtube or Soundcloud link ideally.'}/>}
+							</div>
 						<div className="row">
-							{!showCommentForm && (<GuestNotice/>
-								)}
+							{!showCommentForm && <GuestNotice />}
+
 							{showCommentForm && (
 								<form
 									className="col s12"
