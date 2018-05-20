@@ -232,61 +232,61 @@
               });
             }
             // if we find it and it voted for that request already
-            if (user.votes.upvotes[req.params.id]) {
+            if (user.repliesVotes.upvotes[req.params.id]) {
               // we remove the key from his vote collection
               operation = 'unvote';
-              _.unset(user, `votes.upvotes[${req.params.id}]`);
+              _.unset(user, `repliesVotes.upvotes[${req.params.id}]`);
               // if it had already downvoted
-            } else if (user.votes.downvotes[req.params.id]) {
+            } else if (user.repliesVotes.downvotes[req.params.id]) {
               operation = 'update_vote';
               // we undo the downvote
-              _.unset(user, `votes.downvotes[${req.params.id}]`);
+              _.unset(user, `repliesVotes.downvotes[${req.params.id}]`);
               // and we do the upvote
-              user.votes.upvotes[req.params.id] = true;
+              user.repliesVotes.upvotes[req.params.id] = true;
               console.log('new user value', user);
-            } else if (!user.votes.upvotes[req.params.id]) {
+            } else if (!user.repliesVotes.upvotes[req.params.id]) {
               operation = 'upvote';
               // if it hadn't voted for the request yet, we add the key and set it to true
-              user.votes.upvotes[req.params.id] = true;
+              user.repliesVotes.upvotes[req.params.id] = true;
             }
             // then we update the user entry with the new value of 'votes'
             const query = { _id: req.params.userid };
-            const update = { votes: user.votes };
+            const update = { repliesVotes: user.repliesVotes };
             const options = { new: true };
             User.findOneAndUpdate(query, update, options)
               .exec()
               .then(user => {
                 // if this operation succeeds, we now go to update the requests...
                 // we find the request by its id
-                Request.findById(req.params.id)
+                Reply.findById(req.params.id)
                   .exec()
-                  .then(request => {
-                    console.log('request', request);
+                  .then(reply => {
+                    console.log('reply', reply);
                     console.log(req.params.id);
-                    if (request.votes.upvotes[req.params.userid]) {
+                    if (reply.votes.upvotes[req.params.userid]) {
                       // if already upvoted we undo
-                      _.unset(request, `votes.upvotes[${req.params.userid}]`);
-                    } else if (request.votes.downvotes[req.params.userid]) {
+                      _.unset(reply, `votes.upvotes[${req.params.userid}]`);
+                    } else if (reply.votes.downvotes[req.params.userid]) {
                       // if already downvoted we undo the downvote
-                      _.unset(request, `votes.downvotes[${req.params.userid}]`);
-                      request.votes.upvotes[req.params.userid] = true;
-                    } else if (!request.votes.upvotes[req.params.userid]) {
+                      _.unset(reply, `votes.downvotes[${req.params.userid}]`);
+                      reply.votes.upvotes[req.params.userid] = true;
+                    } else if (!reply.votes.upvotes[req.params.userid]) {
                       // if it wasn't downvoted nor upvoted we downvote
-                      request.votes.upvotes[req.params.userid] = true;
+                      reply.votes.upvotes[req.params.userid] = true;
                     }
                     const query = { _id: req.params.id };
                     const update = {
-                      votes: request.votes,
-                      upvotes: Object.keys(request.votes.upvotes).length,
-                      downvotes: Object.keys(request.votes.downvotes).length,
+                      votes: reply.votes,
+                      upvotes: Object.keys(reply.votes.upvotes).length,
+                      downvotes: Object.keys(reply.votes.downvotes).length,
                     };
                     const options = { new: true };
-                    Request.findOneAndUpdate(query, update, options)
+                    Reply.findOneAndUpdate(query, update, options)
                       .exec()
-                      .then(request => {
+                      .then(reply => {
                         return res.status(200).json({
                           success: true,
-                          message: 'You upvoted that track',
+                          message: 'You upvoted that reply',
                         });
                       })
                       .catch(err => {
@@ -329,63 +329,63 @@
               });
             }
             // if we find it and it downvoted for that request already
-            if (user.votes.downvotes[req.params.id]) {
+            if (user.repliesVotes.downvotes[req.params.id]) {
               // we undo the downvote
               console.log('undo vote');
               operation = 'unvote';
-              _.unset(user, `votes.downvotes[${req.params.id}]`);
+              _.unset(user, `repliesVotes.downvotes[${req.params.id}]`);
               // if the user had upvoted that track
-            } else if (user.votes.upvotes[req.params.id]) {
+            } else if (user.repliesVotes.upvotes[req.params.id]) {
               console.log('update vote');
               operation = 'update_vote';
               // we undo the upvote
-              _.unset(user, `votes.upvotes[${req.params.id}]`);
+              _.unset(user, `repliesVotes.upvotes[${req.params.id}]`);
               // and we downvote
-              user.votes.downvotes[req.params.id] = true;
+              user.repliesVotes.downvotes[req.params.id] = true;
               //
-            } else if (!user.votes.downvotes[req.params.id]) {
+            } else if (!user.repliesVotes.downvotes[req.params.id]) {
               operation = 'downvote';
               // if it hadn't voted for the request yet, we add the key and set it to true
-              user.votes.downvotes[req.params.id] = true;
+              user.repliesVotes.downvotes[req.params.id] = true;
             }
             // then we update the user entry with the new value of 'votes'
             const query = { _id: req.params.userid };
-            const update = { votes: user.votes };
+            const update = { repliesVotes: user.repliesVotes };
             const options = { new: true };
             User.findOneAndUpdate(query, update, options)
               .exec()
               .then(user => {
                 // if this operation succeeds, we now go to update the requests...
                 // we find the request by its id
-                Request.findById(req.params.id)
+                Reply.findById(req.params.id)
                   .exec()
-                  .then(request => {
+                  .then(reply => {
                     console.log('user id is ', req.params.userid);
-                    if (request.votes.downvotes[req.params.userid]) {
+                    if (reply.votes.downvotes[req.params.userid]) {
                       // if already downvoted we undo
-                      _.unset(request, `votes.downvotes[${req.params.userid}]`);
-                    } else if (request.votes.upvotes[req.params.userid]) {
+                      _.unset(reply, `votes.downvotes[${req.params.userid}]`);
+                    } else if (reply.votes.upvotes[req.params.userid]) {
                       // if already upvoted we undo the upvote
-                      _.unset(request, `votes.upvotes[${req.params.userid}]`);
+                      _.unset(reply, `votes.upvotes[${req.params.userid}]`);
                       // and we downvote
-                      request.votes.downvotes[req.params.userid] = true;
-                    } else if (!request.votes.downvotes[req.params.userid]) {
+                      reply.votes.downvotes[req.params.userid] = true;
+                    } else if (!reply.votes.downvotes[req.params.userid]) {
                       // if it wasn't downvoted nor upvoted we downvote
-                      request.votes.downvotes[req.params.userid] = true;
+                      reply.votes.downvotes[req.params.userid] = true;
                     }
                     const query = { _id: req.params.id };
                     const update = {
-                      votes: request.votes,
-                      upvotes: Object.keys(request.votes.upvotes).length,
-                      downvotes: Object.keys(request.votes.downvotes).length,
+                      votes: reply.votes,
+                      upvotes: Object.keys(reply.votes.upvotes).length,
+                      downvotes: Object.keys(reply.votes.downvotes).length,
                     };
                     const options = { new: true };
-                    Request.findOneAndUpdate(query, update, options)
+                    Reply.findOneAndUpdate(query, update, options)
                       .exec()
-                      .then(request => {
+                      .then(reply => {
                         return res.status(200).json({
                           success: true,
-                          message: 'You downvoted that track',
+                          message: 'You downvoted that reply',
                         });
                       })
                       .catch(err => {

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { PulseLoader } from 'halogenium';
 import get from 'lodash/get';
 import Button from 'material-ui/Button';
-
+import {Link} from 'react-router-dom';
 import Comment from '../../components/Comment';
 import VoteButtons from '../../../Core/VoteButtons';
 import Notice from '../../../Core/Notice';
@@ -146,6 +146,21 @@ class RequestDetails extends Component {
 					<div className="col s12 m12">
 						<div className="card light-blue accent-1">
 							<div className="card-content white-text">
+							<div
+									style={{
+										display: 'block',
+										position: 'absolute',
+										left: '20px',
+									}}
+									className={'left'}>
+									<Link
+									to={'/requests'}
+					style={{}}
+					// onClick={this.handleDeleteRequest}
+					className="btn-floating btn-large blue left">
+					back
+				</Link>
+								</div>
 								<div
 									style={{
 										display: 'block',

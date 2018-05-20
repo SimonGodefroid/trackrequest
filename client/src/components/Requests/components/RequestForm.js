@@ -140,7 +140,7 @@ class RequestForm extends Component {
 						<div>
 							<h5>
 								I would love to hear a{' '}
-								<span color="primary">{`${this.props.recipe ||
+								<span style={{ color: 'green' }}>{`${this.props.recipe ||
 									''}`}</span>
 							</h5>
 
@@ -177,7 +177,7 @@ class RequestForm extends Component {
 						<div>
 							<h5>
 								of the song{' '}
-								<span>{`${this.props.sourceTrack ||
+								<span style={{ color: 'green' }}>{`${this.props.sourceTrack ||
 									''}`}</span>
 							</h5>
 							<Field
@@ -269,7 +269,7 @@ class RequestForm extends Component {
 						{/* End of Source Artist Field */}
 						{/* Target Artist Field */}
 						<div>
-							<h5>revisited by <span>{`${this.props.targetArtist || ''}`}</span></h5>
+							<h5>revisited by <span style={{ color: 'green' }}>{`${this.props.targetArtist || ''}`}</span></h5>
 
 							<Field
 								name="targetArtistSelect"
@@ -304,7 +304,7 @@ class RequestForm extends Component {
 						{/* End of Target Artist Field */}
 						{/* Flavour Field */}
 						<div>
-							<h5>reworked in a <span>{`${((this.props.flavour || '<insert here>') + ' vibe' )|| ''}`}</span></h5>
+							<h5>reworked in a <span style={{ color: 'green' }}>{`${((this.props.flavour || '<insert here>') + ' vibe' )|| ''}`}</span></h5>
 
 							<Field
 								name="flavourSelect"

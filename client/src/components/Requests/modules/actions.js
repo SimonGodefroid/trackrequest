@@ -138,3 +138,21 @@ export const deleteReply = (
   );
   dispatch({ type: POST_REPLY, payload: res.data });
 };
+export const upvoteReply = (
+  userId,
+  replyId,
+) => async dispatch => {
+  const res = await axios.post(
+    `/api/replies/upvote/${replyId}/user/${userId}`,
+  );
+  dispatch({ type: POST_REPLY, payload: res.data });
+};
+export const downvoteReply = (
+  userId,
+  replyId,
+) => async dispatch => {
+  const res = await axios.post(
+    `/api/replies/downvote/${replyId}/user/${userId}`,
+  );
+  dispatch({ type: POST_REPLY, payload: res.data });
+};

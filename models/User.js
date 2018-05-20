@@ -14,6 +14,10 @@ const UserSchema = new Schema({
     upvotes:{ type: Object, default: {} },
     downvotes:{ type: Object, default: {} },
   },
+  repliesVotes:{
+    upvotes:{ type: Object, default: {} },
+    downvotes:{ type: Object, default: {} },
+  },
   // keep track of comments
   // keep track of votes on comments
   // keep track on replies

@@ -25,7 +25,23 @@ class ReplyCard extends Component {
 			.then(() => this.props.getComments(requestId));
 	};
 
+	handleUpvoteReply = (evt) =>{
+		evt.preventDefault();
+		const { reply, auth, requestId } = this.props;
+		console.log('Coucou upvote')
+		this.props.upvoteReply(auth._id,reply._id)
+		.then(() => this.props.getComments(requestId));
+	}
+	handleDownvoteReply = (evt) =>{
+		evt.preventDefault();
+		const { reply, auth, requestId } = this.props;
+		console.log('Coucou downvote')
+		this.props.downvoteReply(auth._id,reply._id)
+		.then(() => this.props.getComments(requestId));
+	}
+
 	render() {
+		console.log('reply card this.props',this.props)
 		if (Object.keys(this.props.reply).length) {
 			return (
 				<div key={this.props.reply._id}>
@@ -63,7 +79,7 @@ class ReplyCard extends Component {
 									<a
 										className="waves-effect waves-teal btn-flat"
 										style={{ color: 'black' }}
-										onClick={()=>{console.log('upvote')}}
+										onClick={this.handleUpvoteReply}
 										>
 										<i className="material-icons">
 											thumb_up
@@ -74,7 +90,7 @@ class ReplyCard extends Component {
 										{
 											Object.keys(
 												get(
-													this.props.rep,
+													this.props.reply,
 													'votes.downvotes',
 													{}
 												)
@@ -87,7 +103,7 @@ class ReplyCard extends Component {
 											color: 'black',
 											display: 'inline-block',
 										}}
-										onClick={()=>{console.log('downvote')}}
+										onClick={this.handleDownvoteReply}
 										>
 										<i className="material-icons">
 										thumb_down
