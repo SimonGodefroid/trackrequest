@@ -6,9 +6,10 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { withRouter } from 'react-router-dom';
 import * as actionCreators from './Requests/modules/actions';
-import Suggestions from './Requests/components/Suggestions';
+import NewIn from './Core/NewIn';
+// import Suggestions from './Requests/components/Suggestions';
 import map from 'lodash/map';
-import GridList from './GridList';
+// import GridList from './GridList';
 class Landing extends Component {
 	componentDidMount() {
 		this.props.fetchRequests();
@@ -46,7 +47,7 @@ class Landing extends Component {
 				</div>
 				<div>
 				{this.props.requests && (
-					<GridList requests={this.props.requests} />
+					<NewIn suggestions={this.props.requests} />
 				)}
 				</div>
 			</div>
