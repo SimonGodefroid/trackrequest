@@ -44,7 +44,7 @@ if(!suggestions.length){
 }else{
   return (
     <div className={classes.root}>
-    <h4>Browse the latest tracks requests</h4>
+  {/*<h4>Browse the latest tracks requests</h4>*/}
       <GridList className={classes.gridList} cols={2.5}>
         {suggestions.map(suggestion => (
           <Link to={`/request/${suggestion._id}`} key={suggestion._id}>
