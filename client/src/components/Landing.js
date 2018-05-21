@@ -28,6 +28,7 @@ class Landing extends Component {
 							artist, occasional artist, fan or creative folk
 						</h5>
 					</div>
+					<div>
 					<Icon style={{ color: '#3f51b5' }}>music_note</Icon>
 					<Icon style={{ color: 'black' }}>add</Icon>
 					<Icon style={{ color: '#B388FF' }}>group</Icon>
@@ -35,6 +36,7 @@ class Landing extends Component {
 					<Icon style={{ color: 'grey' }}>build</Icon>
 					<Icon style={{ color: 'black' }}>arrow_forward</Icon>
 					<Icon style={{ color: '#f50057' }}>favorite</Icon>
+					</div>
 					<div>
 						<h5>
 							<em>" </em>Genius lies as much in the ideation as in
