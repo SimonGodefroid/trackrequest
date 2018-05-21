@@ -31,6 +31,7 @@ class Landing extends Component {
 					</h5>
 				</div>
 				<div style={{display:'inline-block'}}>
+<<<<<<< HEAD
 					<span><Icon style={{ color: '#3f51b5' }}>music_note</Icon></span>
 					<span><Icon style={{ color: 'black' }}>add</Icon></span>
 					<span><Icon style={{ color: '#B388FF' }}>group</Icon></span>
@@ -38,6 +39,15 @@ class Landing extends Component {
 					<span><Icon style={{ color: 'grey' }}>build</Icon></span>
 					<span><Icon style={{ color: 'black' }}>arrow_forward</Icon></span>
 					<span><Icon style={{ color: '#f50057' }}>favorite</Icon></span>
+=======
+					<Icon style={{ color: '#3f51b5' }}>music_note</Icon>
+					<Icon style={{ color: 'black' }}>add</Icon>
+					<Icon style={{ color: '#B388FF' }}>group</Icon>
+					<Icon style={{ color: 'black' }}>add</Icon>
+					<Icon style={{ color: 'grey' }}>build</Icon>
+					<Icon style={{ color: 'black' }}>arrow_forward</Icon>
+					<Icon style={{ color: '#f50057' }}>favorite</Icon>
+>>>>>>> bc035f25f6af648d13faec7e7c335bc2f9092b4d
 				</div>
 				<div>
 					<h5>
@@ -45,7 +55,10 @@ class Landing extends Component {
 						execution.<em>"</em>
 					</h5>
 				</div>
+<<<<<<< HEAD
 				<div>
+=======
+>>>>>>> bc035f25f6af648d13faec7e7c335bc2f9092b4d
 				{this.props.requests && (
 					<NewIn suggestions={this.props.requests} />
 				)}
