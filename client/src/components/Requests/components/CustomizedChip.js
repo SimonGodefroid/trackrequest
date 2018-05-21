@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { withStyles } from 'material-ui/styles';
 import Avatar from 'material-ui/Avatar';
 import Chip from 'material-ui/Chip';
+import { PulseLoader } from 'halogenium';
 
 const styles = theme => ({
   root: {
@@ -23,16 +24,21 @@ const styles = theme => ({
 
 const Chips = (props) =>{
   const { classes } = props;
-  return (
-    <div className={classes.root}>
-      <Chip
-        avatar={<Avatar src={props.user.avatar} alt={`${props.user.username} profile`}/>}
-        label={`${props.user.username.substring(0, 5)}...`}
-        onClick={handleClick}
-        className={classes.chip}
-      />
-    </div>
-  );
+  if(props.user){
+    return (
+      <div className={classes.root}>
+        <Chip
+          avatar={<Avatar src={props.user.avatar} alt={`${props.user.username} profile`}/>}
+          label={`${props.user.username.substring(0, 5)}...`}
+          onClick={handleClick}
+          className={classes.chip}
+        />
+      </div>
+    );
+  }
+else{
+  return <PulseLoader/>
+}
 }
 
 Chips.propTypes = {
