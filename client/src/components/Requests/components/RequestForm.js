@@ -118,246 +118,233 @@ class RequestForm extends Component {
 		);
 
 	render() {
-		if (!this.state.suggestions.length) {
-			return (
-				<div className={'center'}>
-					<PulseLoader color="#26A65B" size="16px" margin="4px" />
-				</div>
-			);
-		} else {
-			return (
-				<div
-					className={'container white'}
-					style={{ marginTop: '100px' }}>
-					<h3 className={`center`}>Create your request</h3>
+		console.log('this.state',this.state)
+		return (
+			<div className={'container white'} style={{ marginTop: '100px' }}>
+				<h3 className={`center`}>Create your request</h3>
+				{this.state.suggestions.length && (
 					<Suggestions suggestions={this.state.suggestions} />
-					<form
-						onSubmit={this.props.handleSubmit(
-							this.props.onRequestSubmit
-						)}
-						style={{ margin: '100px' }}>
-						{/* Recipe Field */}
-						<div>
-							<h5>
-								I would love to hear a{' '}
-								<span style={{ color: 'green' }}>{`${this.props.recipe ||
-									''}`}</span>
-							</h5>
+				)}
+				<form
+					onSubmit={this.props.handleSubmit(
+						this.props.onRequestSubmit
+					)}
+					style={{ margin: '100px' }}>
+					{/* Recipe Field */}
+					<div>
+						<h5>
+							I would love to hear a{' '}
+							<span style={{ color: 'green' }}>{`${this.props
+								.recipe || ''}`}</span>
+						</h5>
 
-							<Field
-								name="recipeSelect"
-								component={(props) => (
-									<Select
-										{...props}
-										// multi
-										options={RECIPES}
-										placeholder="Select a recipe"
-										value={props.input.value}
-										onChange={props.input.onChange}
-										onBlur={() => {
-											props.input.onBlur(
-												props.input.value
-											);
-										}}
-									/>
-								)}
-							/>
-							<label>
-								The <em>Recipe</em> is the type of version you
-								expect, Cover, Remix, Mashup...
-							</label>
-							<div
-								className={`red-text`}
-								style={{ marginBottom: '20px' }}
-							/>
-						</div>
-						{/* End of Recipe Field */}
+						<Field
+							name="recipeSelect"
+							component={(props) => (
+								<Select
+									{...props}
+									// multi
+									options={RECIPES}
+									placeholder="Select a recipe"
+									value={props.input.value}
+									onChange={props.input.onChange}
+									onBlur={() => {
+										props.input.onBlur(props.input.value);
+									}}
+								/>
+							)}
+						/>
+						<label>
+							The <em>Recipe</em> is the type of version you
+							expect, Cover, Remix, Mashup...
+						</label>
+						<div
+							className={`red-text`}
+							style={{ marginBottom: '20px' }}
+						/>
+					</div>
+					{/* End of Recipe Field */}
 
-						{/* Source Track Field */}
-						<div>
-							<h5>
-								of the song{' '}
-								<span style={{ color: 'green' }}>{`${this.props.sourceTrack ||
-									''}`}</span>
-							</h5>
-							<Field
-								name="sourceTrackSelect"
-								placeholder="Search for the source track"
-								component={(props) => (
-									<AsyncCreatable
-										creatable={true}
-										loadOptions={this.getOptionsTracks}
-										value={props.input.value}
-										onChange={(value) => {
-											if (value && value.songUrl) {
-												const url = value.songUrl.substring(
-													0,
-													value.songUrl.search('/_/')
-												);
-												this.props.change(
-													'sourceArtistSelect',
-													{
-														value:
-															value.artist || '',
-														label:
-															value.artist || '',
-														url: url,
-														images:
-															value.images || [],
-													}
-												);
-											}
-											props.input.onChange(value);
-										}}
-										onBlurResetsInput={false}
-										{...props}
-										onBlur={() => {
-											props.input.onBlur(
-												props.input.value
+					{/* Source Track Field */}
+					<div>
+						<h5>
+							of the song{' '}
+							<span style={{ color: 'green' }}>{`${this.props
+								.sourceTrack || ''}`}</span>
+						</h5>
+						<Field
+							name="sourceTrackSelect"
+							placeholder="Search for the source track"
+							component={(props) => (
+								<AsyncCreatable
+									creatable={true}
+									loadOptions={this.getOptionsTracks}
+									value={props.input.value}
+									onChange={(value) => {
+										if (value && value.songUrl) {
+											const url = value.songUrl.substring(
+												0,
+												value.songUrl.search('/_/')
 											);
-										}}
-									/>
-								)}
-							/>
-							<label>
-								The <em>Source Track</em> is the original track
-								you want to be reworked
-							</label>
-							<div
-								className={`red-text`}
-								style={{ marginBottom: '20px' }}
-							/>
-						</div>
-						{/* End of Source Track Field */}
-						{/* Source Artist Field */}
-						<div>
-							<h5>
-								originally performed by{' '}
-								<span style={{ color: 'green' }}>{`${this.props
-									.sourceArtist || ''}`}</span>
-							</h5>
-							<Field
-								name="sourceArtistSelect"
-								placeholder="Search for the source artist"
-								component={(props) => (
-									<AsyncCreatable
-										creatable={true}
-										onValueClick={this.gotoArtist}
-										loadOptions={this.getOptionsArtists}
-										onChange={props.input.onChange}
-										{...props}
-										value={props.input.value}
-										onBlur={() => {
-											props.input.onBlur(
-												props.input.value
+											this.props.change(
+												'sourceArtistSelect',
+												{
+													value: value.artist || '',
+													label: value.artist || '',
+													url: url,
+													images: value.images || [],
+												}
 											);
-										}}
-									/>
-								)}
-							/>
-							<label>
-								The <em>Source Artist</em> is the artist who
-								originally performed the source track, fill this
-								field if we don't have the artist in the
-								database
-							</label>
-							<div
-								className={`red-text`}
-								style={{ marginBottom: '20px' }}
-							/>
-						</div>
-						{/* End of Source Artist Field */}
-						{/* Target Artist Field */}
-						<div>
-							<h5>revisited by <span style={{ color: 'green' }}>{`${this.props.targetArtist || ''}`}</span></h5>
+										}
+										props.input.onChange(value);
+									}}
+									onBlurResetsInput={false}
+									{...props}
+									onBlur={() => {
+										props.input.onBlur(props.input.value);
+									}}
+								/>
+							)}
+						/>
+						<label>
+							The <em>Source Track</em> is the original track you
+							want to be reworked
+						</label>
+						<div
+							className={`red-text`}
+							style={{ marginBottom: '20px' }}
+						/>
+					</div>
+					{/* End of Source Track Field */}
+					{/* Source Artist Field */}
+					<div>
+						<h5>
+							originally performed by{' '}
+							<span style={{ color: 'green' }}>{`${this.props
+								.sourceArtist || ''}`}</span>
+						</h5>
+						<Field
+							name="sourceArtistSelect"
+							placeholder="Search for the source artist"
+							component={(props) => (
+								<AsyncCreatable
+									creatable={true}
+									onValueClick={this.gotoArtist}
+									loadOptions={this.getOptionsArtists}
+									onChange={props.input.onChange}
+									{...props}
+									value={props.input.value}
+									onBlur={() => {
+										props.input.onBlur(props.input.value);
+									}}
+								/>
+							)}
+						/>
+						<label>
+							The <em>Source Artist</em> is the artist who
+							originally performed the source track, fill this
+							field if we don't have the artist in the database
+						</label>
+						<div
+							className={`red-text`}
+							style={{ marginBottom: '20px' }}
+						/>
+					</div>
+					{/* End of Source Artist Field */}
+					{/* Target Artist Field */}
+					<div>
+						<h5>
+							revisited by{' '}
+							<span style={{ color: 'green' }}>{`${this.props
+								.targetArtist || ''}`}</span>
+						</h5>
 
-							<Field
-								name="targetArtistSelect"
-								placeholder="Search a target artist"
-								component={(props) => (
-									<AsyncCreatable
-										{...props}
-										creatable={true}
-										onValueClick={this.gotoArtist}
-										loadOptions={this.getOptionsArtists}
-										value={props.input.value}
-										onChange={props.input.onChange}
-										onBlur={() => {
-											props.input.onBlur(
-												props.input.value
-											);
-										}}
-									/>
-								)}
-							/>
-							<label>
-								The <em>Target Artist</em> is the artist you
-								would like to perform the rework, create an
-								option if we don't have the artist (yet) in the
-								database
-							</label>
-							<div
-								className={`red-text`}
-								style={{ marginBottom: '20px' }}
-							/>
-						</div>
-						{/* End of Target Artist Field */}
-						{/* Flavour Field */}
-						<div>
-							<h5>reworked in a <span style={{ color: 'green' }}>{`${((this.props.flavour || '<insert here>') + ' vibe' )|| ''}`}</span></h5>
+						<Field
+							name="targetArtistSelect"
+							placeholder="Search a target artist"
+							component={(props) => (
+								<AsyncCreatable
+									{...props}
+									creatable={true}
+									onValueClick={this.gotoArtist}
+									loadOptions={this.getOptionsArtists}
+									value={props.input.value}
+									onChange={props.input.onChange}
+									onBlur={() => {
+										props.input.onBlur(props.input.value);
+									}}
+								/>
+							)}
+						/>
+						<label>
+							The <em>Target Artist</em> is the artist you would
+							like to perform the rework, create an option if we
+							don't have the artist (yet) in the database
+						</label>
+						<div
+							className={`red-text`}
+							style={{ marginBottom: '20px' }}
+						/>
+					</div>
+					{/* End of Target Artist Field */}
+					{/* Flavour Field */}
+					<div>
+						<h5>
+							reworked in a{' '}
+							<span style={{ color: 'green' }}>{`${(this.props
+								.flavour || '<insert here>') + ' vibe' ||
+								''}`}</span>
+						</h5>
 
-							<Field
-								name="flavourSelect"
-								component={(props) => (
-									<Select.Creatable
-										{...props}
-										// multi
-										creatable={true}
-										options={FLAVOURS}
-										placeholder="Select a flavour"
-										value={props.input.value}
-										onChange={props.input.onChange}
-										onBlur={() => {
-											props.input.onBlur(
-												props.input.value
-											);
-										}}
-									/>
-								)}
-							/>
-							<label>
-								The <em>Flavour</em> is the style in which you
-								would love the target song to be reworked
-							</label>
-							<div
-								className={`red-text`}
-								style={{ marginBottom: '20px' }}
-							/>
-						</div>
-						{/* End of Flavour Field */}
-						{this.renderFields()}
-						<div style={{ paddingTop: '20px' }}>
-							<button
-								className={`teal btn-flat right white-text`}
-								type={`submit`}>
-								Next
-								<i className={`material-icons right`}>done</i>
-							</button>
-							<Link
-								to={`/requests`}
-								className={`red btn-flat left white-text`}
-								type={`submit`}
-								onClick={() => {
-									this.props.destroy();
-								}}>
-								Cancel
-								<i className={`material-icons left`}>cancel</i>
-							</Link>
-						</div>
-					</form>
-				</div>
-			);
-		}
+						<Field
+							name="flavourSelect"
+							component={(props) => (
+								<Select.Creatable
+									{...props}
+									// multi
+									creatable={true}
+									options={FLAVOURS}
+									placeholder="Select a flavour"
+									value={props.input.value}
+									onChange={props.input.onChange}
+									onBlur={() => {
+										props.input.onBlur(props.input.value);
+									}}
+								/>
+							)}
+						/>
+						<label>
+							The <em>Flavour</em> is the style in which you would
+							love the target song to be reworked
+						</label>
+						<div
+							className={`red-text`}
+							style={{ marginBottom: '20px' }}
+						/>
+					</div>
+					{/* End of Flavour Field */}
+					{this.renderFields()}
+					<div style={{ paddingTop: '20px' }}>
+						<button
+							className={`teal btn-flat right white-text`}
+							type={`submit`}>
+							Next
+							<i className={`material-icons right`}>done</i>
+						</button>
+						<Link
+							to={`/requests`}
+							className={`red btn-flat left white-text`}
+							type={`submit`}
+							onClick={() => {
+								this.props.destroy();
+							}}>
+							Cancel
+							<i className={`material-icons left`}>cancel</i>
+						</Link>
+					</div>
+				</form>
+			</div>
+		);
 	}
 }
 
