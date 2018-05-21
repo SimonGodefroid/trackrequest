@@ -16,19 +16,19 @@ class Landing extends Component {
 		return (
 			<div style={{ textAlign: 'center' }}>
 				{/*<h1>Tracks Requests !</h1>*/}
-					<div style={{ padding: '0 40px' }}>
-						<h4>Ask for </h4>{' '}
-						<h5>
-							{' '}
-							covers, remixes, mash ups and everything in-between,
-						</h5>{' '}
-						<h4>to be performed by</h4>{' '}
-						<h5>
-							World Class DJs and Producers to any artist, wannabe
-							artist, occasional artist, fan or creative folk
-						</h5>
-					</div>
-					<div>
+				<div style={{ padding: '0 40px' }}>
+					<h4>Ask for </h4>{' '}
+					<h5>
+						{' '}
+						covers, remixes, mash ups and everything in-between,
+					</h5>{' '}
+					<h4>to be performed by</h4>{' '}
+					<h5>
+						World Class DJs and Producers to any artist, wannabe
+						artist, occasional artist, fan or creative folk
+					</h5>
+				</div>
+				<div style={{display:'inline-block'}}>
 					<Icon style={{ color: '#3f51b5' }}>music_note</Icon>
 					<Icon style={{ color: 'black' }}>add</Icon>
 					<Icon style={{ color: '#B388FF' }}>group</Icon>
@@ -36,13 +36,13 @@ class Landing extends Component {
 					<Icon style={{ color: 'grey' }}>build</Icon>
 					<Icon style={{ color: 'black' }}>arrow_forward</Icon>
 					<Icon style={{ color: '#f50057' }}>favorite</Icon>
-					</div>
-					<div>
-						<h5>
-							<em>" </em>Genius lies as much in the ideation as in
-							the execution.<em>"</em>
-						</h5>
-					</div>
+				</div>
+				<div>
+					<h5>
+						<em>" </em>Genius lies as much in the ideation as in the
+						execution.<em>"</em>
+					</h5>
+				</div>
 				{this.props.requests && (
 					<GridList requests={this.props.requests} />
 				)}
