@@ -16,7 +16,6 @@ class Landing extends Component {
 		return (
 			<div style={{ textAlign: 'center' }}>
 				{/*<h1>Tracks Requests !</h1>*/}
-				<Paper style={{ padding: '1em' }}>
 					<div style={{ padding: '0 40px' }}>
 						<h4>Ask for </h4>{' '}
 						<h5>
@@ -42,7 +41,6 @@ class Landing extends Component {
 							the execution.<em>"</em>
 						</h5>
 					</div>
-				</Paper>
 				{this.props.requests && (
 					<GridList requests={this.props.requests} />
 				)}
