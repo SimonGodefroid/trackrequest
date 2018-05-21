@@ -25,7 +25,7 @@ class RequestForm extends Component {
 	 * Fetch of the top charts for suggestions
 	 */
 		return fetch(
-			`http://ws.audioscrobbler.com/2.0/?method=chart.gettoptracks&api_key=${process
+			`//ws.audioscrobbler.com/2.0/?method=chart.gettoptracks&api_key=${process
 				.env.REACT_APP_LAST_KEY}&format=json`
 		)
 			.then((response) => response.json())
@@ -49,7 +49,7 @@ class RequestForm extends Component {
 			return Promise.resolve({ options: [] });
 		}
 		return fetch(
-			`http://ws.audioscrobbler.com/2.0/?method=track.search&track=${input}&api_key=${process
+			`//ws.audioscrobbler.com/2.0/?method=track.search&track=${input}&api_key=${process
 				.env.REACT_APP_LAST_KEY}&format=json`
 		)
 			.then((response) => response.json())
@@ -73,7 +73,7 @@ class RequestForm extends Component {
 			return Promise.resolve({ options: [] });
 		}
 		return fetch(
-			`http://ws.audioscrobbler.com/2.0/?method=artist.search&artist=${input}&api_key=${process
+			`//ws.audioscrobbler.com/2.0/?method=artist.search&artist=${input}&api_key=${process
 				.env.REACT_APP_LAST_KEY}&format=json`
 		)
 			.then((response) => response.json())
@@ -123,9 +123,7 @@ class RequestForm extends Component {
 			<div className={'container white'} style={{ marginTop: '100px' }}>
 				<h3 className={`center`}>Create your request</h3>
 				<p>{process.env.REACT_APP_LAST_KEY}</p>
-				{this.state.suggestions.length && (
 					<Suggestions suggestions={this.state.suggestions} />
-				)}
 				<form
 					onSubmit={this.props.handleSubmit(
 						this.props.onRequestSubmit

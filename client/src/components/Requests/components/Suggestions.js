@@ -34,7 +34,9 @@ const styles = theme => ({
 
 const Suggestions = props => {
   const { classes, suggestions } = props;
-
+if(!suggestions.length){
+  return null;
+}else{
   return (
     <div className={classes.root}>
     <h4>Get inspired by the top charts...</h4>
@@ -56,6 +58,8 @@ const Suggestions = props => {
           </GridList>
           </div>
   );
+}
+
 };
 
 Suggestions.propTypes = {
