@@ -15,31 +15,37 @@ class Landing extends Component {
 	render() {
 		return (
 			<div style={{ textAlign: 'center' }}>
-			{/*<h1>Tracks Requests !</h1>*/}
-				<h5>
-
-					<Paper style={{ padding: '1em' }}>
-						<p>
-							Ask for covers, remixes, mash ups and everything
-							in-between, by World Class DJs and Producers to any
-							artist, wannabe artist, occasional artist, fan or
-							creative folk.
-						</p>
-							<Icon style={{color:'#3f51b5'}}>music_note</Icon>
-							<Icon style={{color:'black'}}>add</Icon>
-							<Icon style={{color:'#B388FF'}}>group</Icon>
-							<Icon style={{color:'black'}}>add</Icon>
-							<Icon style={{color:'grey'}}>build</Icon>
-							<Icon style={{color:'black'}}>arrow_forward</Icon>
-							<Icon style={{color:'#f50057'}}>favorite</Icon>
-						<div>
-							<h5><em>" </em>Genius lies as much in the ideation as in the execution.<em>"</em></h5>
-						</div>
-					</Paper>
-				</h5>
-				{this.props.requests &&
+				{/*<h1>Tracks Requests !</h1>*/}
+				<Paper style={{ padding: '1em' }}>
+					<div style={{ padding: '0 40px' }}>
+						<h4>Ask for </h4>{' '}
+						<h5>
+							{' '}
+							covers, remixes, mash ups and everything in-between,
+						</h5>{' '}
+						<h4>to be performed by</h4>{' '}
+						<h5>
+							World Class DJs and Producers to any artist, wannabe
+							artist, occasional artist, fan or creative folk
+						</h5>
+					</div>
+					<Icon style={{ color: '#3f51b5' }}>music_note</Icon>
+					<Icon style={{ color: 'black' }}>add</Icon>
+					<Icon style={{ color: '#B388FF' }}>group</Icon>
+					<Icon style={{ color: 'black' }}>add</Icon>
+					<Icon style={{ color: 'grey' }}>build</Icon>
+					<Icon style={{ color: 'black' }}>arrow_forward</Icon>
+					<Icon style={{ color: '#f50057' }}>favorite</Icon>
+					<div>
+						<h5>
+							<em>" </em>Genius lies as much in the ideation as in
+							the execution.<em>"</em>
+						</h5>
+					</div>
+				</Paper>
+				{this.props.requests && (
 					<GridList requests={this.props.requests} />
-					}
+				)}
 			</div>
 		);
 	}
