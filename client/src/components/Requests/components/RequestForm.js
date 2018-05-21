@@ -118,10 +118,11 @@ class RequestForm extends Component {
 		);
 
 	render() {
-		console.log('this.state',this.state)
+		console.log('this.state', this.state);
 		return (
 			<div className={'container white'} style={{ marginTop: '100px' }}>
 				<h3 className={`center`}>Create your request</h3>
+				<p>{process.env.REACT_APP_LAST_KEY}</p>
 				{this.state.suggestions.length && (
 					<Suggestions suggestions={this.state.suggestions} />
 				)}
