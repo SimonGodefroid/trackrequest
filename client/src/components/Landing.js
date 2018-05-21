@@ -6,6 +6,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { withRouter } from 'react-router-dom';
 import * as actionCreators from './Requests/modules/actions';
+import Suggestions from './Requests/components/Suggestions';
 import map from 'lodash/map';
 import GridList from './GridList';
 class Landing extends Component {
@@ -16,36 +17,38 @@ class Landing extends Component {
 		return (
 			<div style={{ textAlign: 'center' }}>
 				{/*<h1>Tracks Requests !</h1>*/}
-				<Paper style={{ padding: '1em' }}>
-					<div style={{ padding: '0 40px' }}>
-						<h4>Ask for </h4>{' '}
-						<h5>
-							{' '}
-							covers, remixes, mash ups and everything in-between,
-						</h5>{' '}
-						<h4>to be performed by</h4>{' '}
-						<h5>
-							World Class DJs and Producers to any artist, wannabe
-							artist, occasional artist, fan or creative folk
-						</h5>
-					</div>
-					<Icon style={{ color: '#3f51b5' }}>music_note</Icon>
-					<Icon style={{ color: 'black' }}>add</Icon>
-					<Icon style={{ color: '#B388FF' }}>group</Icon>
-					<Icon style={{ color: 'black' }}>add</Icon>
-					<Icon style={{ color: 'grey' }}>build</Icon>
-					<Icon style={{ color: 'black' }}>arrow_forward</Icon>
-					<Icon style={{ color: '#f50057' }}>favorite</Icon>
-					<div>
-						<h5>
-							<em>" </em>Genius lies as much in the ideation as in
-							the execution.<em>"</em>
-						</h5>
-					</div>
-				</Paper>
+				<div style={{ padding: '0 40px' }}>
+					<h4>Ask for </h4>{' '}
+					<h5>
+						{' '}
+						covers, remixes, mash ups and everything in-between,
+					</h5>{' '}
+					<h4>to be performed by</h4>{' '}
+					<h5>
+						World Class DJs and Producers to any artist, wannabe
+						artist, occasional artist, fan or creative folk
+					</h5>
+				</div>
+				<div style={{display:'inline-block'}}>
+					<span><Icon style={{ color: '#3f51b5' }}>music_note</Icon></span>
+					<span><Icon style={{ color: 'black' }}>add</Icon></span>
+					<span><Icon style={{ color: '#B388FF' }}>group</Icon></span>
+					<span><Icon style={{ color: 'black' }}>add</Icon></span>
+					<span><Icon style={{ color: 'grey' }}>build</Icon></span>
+					<span><Icon style={{ color: 'black' }}>arrow_forward</Icon></span>
+					<span><Icon style={{ color: '#f50057' }}>favorite</Icon></span>
+				</div>
+				<div>
+					<h5>
+						<em>" </em>Genius lies as much in the ideation as in the
+						execution.<em>"</em>
+					</h5>
+				</div>
+				<div>
 				{this.props.requests && (
 					<GridList requests={this.props.requests} />
 				)}
+				</div>
 			</div>
 		);
 	}
